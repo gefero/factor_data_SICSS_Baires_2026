@@ -1,4 +1,5 @@
 ![Logos Factor~Data y SICSS](imgs/logo_final_conjunto.png)
+# Taller de Procesamiento de Lenguaje Natural
 
 # Docentes
 - [Germán Rosati](https://gefero.github.io/)
