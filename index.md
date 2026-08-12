@@ -14,8 +14,6 @@ Se propone que las y los asistentes:
   datos textuales (tokenización, lematización, stemming, etc.) y la
   representación vectorial clásica de textos (Document-Term Matrix, Bag of
   Words, etc.);
-- conozcan técnicas de modelado y detección de tópicos (Latent Dirichlet
-  Allocation);
 - se introduzcan a técnicas modernas de representación vectorial de textos
   (word embeddings, word2vec);
 - incorporen nociones básicas de la arquitectura Transformer (mecanismo de
@@ -34,7 +32,7 @@ Qué es NLP y el problema del dato no estructurado, un flujo de trabajo
 lematización), representación matemática de un texto (Document-Term Matrix,
 Bag of Words) y modelado de tópicos con Latent Dirichlet Allocation (LDA).
 - [Diapositivas](https://docs.google.com/presentation/d/1ZoOBD8BvoVZkAu_58hRxQe2xowutgVfrsGJo3tR4QeY/edit?usp=sharing)
-- [Notebook](https://drive.google.com/file/d/1dpL7G5Cp5Zpi3Rkzp1MrTSYRG_VjCAN0/view?usp=drive_link)
+- [Notebook](https://drive.google.com/file/d/1CjMq7aKPH_P_mFDEtRlNgLUFpanNnzNQ/view?usp=sharing)
 
 ### M1. Acercamiento a los word embeddings
 Semántica léxica y semántica vectorial, matrices de co-ocurrencia
