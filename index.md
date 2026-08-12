@@ -1,9 +1,12 @@
-# Materiales
+# Summer Institute in Computational Social Science - Argentina 2026
+## Taller de Procesamiento de lenguaje N
 
 ![Logos Factor~Data y SICSS](imgs/logos_final.png)
 
 ## Docente
 - [Germán Rosati](https://gefero.github.io/)
+- [Juan Manuel Pérez](https://www.linkedin.com/in/perezjuanma/)
+- [Tomás Maguire](https://www.linkedin.com/in/tomasebm/)
 
 ## Ayudante
 - Román Fernández Arias
