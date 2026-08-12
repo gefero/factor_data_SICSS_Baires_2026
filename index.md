@@ -1,7 +1,6 @@
-# Summer Institute in Computational Social Science - Argentina 2026
-## Taller de Procesamiento de lenguaje N
+# Taller de Procesamiento de lenguaje Natural
 
-![Logos Factor~Data y SICSS](imgs/logos_final.png)
+![Logos Factor~Data y SICSS](imgs/logo_final_conjunto.png)
 
 ## Docente
 - [Germán Rosati](https://gefero.github.io/)
