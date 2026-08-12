@@ -1,7 +1,12 @@
 # Materiales
 
+![Logos Factor~Data y SICSS](imgs/logos_final.png)
+
 ## Docente
 - [Germán Rosati](https://gefero.github.io/)
+
+## Ayudante
+- Román Fernández Arias
 
 ## Presentación
 Este taller es una introducción práctica al **Procesamiento de Lenguaje Natural
@@ -55,7 +60,3 @@ Evolución de los LLMs, para qué (no) conviene usarlos, sus riesgos
 prompt engineering: roles (`system`/`user`), x-shot learning y Chain of
 Thought (CoT).
 - [Diapositivas](https://docs.google.com/presentation/d/1mtF_NDhC8dnK7CAWxcgTcdErfrcu2EPxe5JPe-L2yuE/edit?usp=sharing)
-
----
-
-![Logos Factor~Data y SICSS](imgs/logos_final.png)
