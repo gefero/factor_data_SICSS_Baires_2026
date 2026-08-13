@@ -1,0 +1,993 @@
+---
+title: "Clasificación de tweets con distintas representaciones: TF, TF-IDF y Word Embeddings"
+subtitle: "Summer Institute in Computational Social Sciences - Buenos Aires 2026 · Taller de NLP y polarización (versión R / tidymodels)"
+output:
+  html_notebook:
+    toc: true
+    toc_float: true
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+# Introducción
+
+El objetivo de este notebook es comparar distintas formas de representar texto
+como *features* para un modelo de clasificación, usando como caso el dataset
+**HatEval** (SemEval-2019 Task 5), que ya vienen utilizando en las prácticas de
+este taller. El dataset viene dividido en tres splits, cada uno en su propio
+archivo dentro de `data/`:
+
+- `hateval_train_df.csv`: split de **entrenamiento**. Lo usamos para ajustar
+  (`fit()`) cada modelo.
+- `hateval_dev_df.csv`: split de **validación**. Lo usamos para elegir el
+  mejor valor del hiperparámetro de regularización de cada modelo.
+- `hateval_test_df.csv`: split de **test**. Lo usamos únicamente al final,
+  para evaluar el desempeño de cada modelo sobre datos que no participaron ni
+  del entrenamiento ni de la elección de hiperparámetros.
+
+Cada fila de estos archivos es un tweet con las siguientes columnas relevantes:
+
+- `id`: identificador del tweet
+- `text`: el texto del tweet
+- `language`: idioma del tweet (`en` o `es`)
+- `HS`: 1 si el tweet contiene discurso de odio (*hate speech*), 0 en caso contrario
+- `TR`, `AG`: otras anotaciones (agresividad, si el odio está dirigido a un
+  individuo o a un grupo) que no vamos a usar acá
+
+La tarea de clasificación va a ser predecir `HS` (discurso de odio sí/no) a
+partir del texto del tweet.
+
+Como en la última sección vamos a usar **embeddings preentrenados en
+español** (SBWCE), y los tres splits tienen tweets tanto en inglés como en
+español, nos vamos a quedar solamente con los tweets en español
+(`language == "es"`) de cada split para poder comparar las tres
+representaciones sobre los mismos datos.
+
+Al igual que en el ejemplo con reseñas de Amazon (`cap0/ejemplo_clasificacion.ipynb`),
+vamos a entrenar en cada caso una regresión logística regularizada por LASSO
+(penalización L1), variando el hiperparámetro de regularización. A diferencia
+de un flujo típico de `tidymodels` con validación cruzada (K-Fold, vía
+`vfold_cv()`), acá **no** usamos K-Fold: como ya contamos con un split de
+validación (`dev`) independiente, entrenamos cada candidato sobre `train` y
+elegimos el que mejor performa sobre `dev`. Esto se puede expresar en
+`tidymodels` con un `rset` de un solo split hecho "a mano" a partir de
+`train`/`dev` (en vez del `vfold_cv()` habitual) — lo armamos más abajo con
+`rsample::make_splits()` + `rsample::manual_rset()`. `test` queda
+completamente afuera de ese proceso, y solo se usa al final para reportar el
+desempeño de cada modelo ya elegido.
+
+Vamos a comparar tres formas de vectorizar los tweets:
+
+1. **TF** (*Term Frequency*, bolsa de palabras con conteos)
+2. **TF-IDF** (*Term Frequency - Inverse Document Frequency*)
+3. **Word embeddings preentrenados** (promedio de vectores de palabras)
+
+Además de las métricas de desempeño (ROC AUC, accuracy, precision, recall,
+F1), en TF y TF-IDF vamos a mirar los coeficientes ($\beta$) del modelo para
+interpretar qué palabras aprendió a asociar con discurso de odio. Con
+embeddings esto no va a ser posible de la misma forma — lo vamos a explicar
+en esa sección.
+
+## El "kit" de tidymodels que vamos a usar
+
+Como equivalente de `scikit-learn` usamos el ecosistema `tidymodels`:
+
+| scikit-learn | tidymodels | Para qué |
+|---|---|---|
+| `CountVectorizer` / `TfidfVectorizer` | `textrecipes::step_tf()` / `step_tfidf()` | vectorización de texto dentro de un `recipe` |
+| `Pipeline` | `workflows::workflow()` | encadenar preprocesamiento (`recipe`) + modelo (`model spec`) |
+| `LogisticRegression(penalty="l1", solver="liblinear")` | `parsnip::logistic_reg(penalty = tune(), mixture = 1)` con motor `"glmnet"` | regresión logística LASSO |
+| bucle manual sobre valores de `C` + `roc_auc_score` en `dev` | `tune::tune_grid()` sobre un `rset` de un solo split (train/dev) | búsqueda de hiperparámetros usando el split de validación |
+| `roc_auc_score`, `accuracy_score`, etc. | `yardstick::metric_set(roc_auc, accuracy, precision, recall, f_meas)` | métricas de desempeño |
+
+# Instalación de dependencias y datos externos
+
+```{r instalar-dependencias, eval=FALSE}
+# Ejecutar una sola vez para instalar las dependencias de este notebook
+install.packages(c(
+  "tidyverse", "tidymodels", "textrecipes", "tidytext",
+  "glmnet", "word2vec", "stringi", "here", "ranger", "vip"
+))
+```
+
+```{r descargar-embeddings, eval=FALSE}
+## Ejecutar para descargar los embeddings preentrenados en español (SBWCE)
+## que vamos a usar en la última sección. Los datasets de HatEval ya están
+## versionados en data/, así que no hace falta descargarlos ni clonar nada.
+dir.create("models", showWarnings = FALSE)
+download.file(
+  url = "https://cs.famaf.unc.edu.ar/~ccardellino/SBWCE/SBW-vectors-300-min5.bin.gz",
+  destfile = "models/SBW-vectors-300-min5.bin.gz",
+  mode = "wb"
+)
+system("gunzip models/SBW-vectors-300-min5.bin.gz")
+```
+
+```{r libraries}
+library(tidyverse)    # dplyr, stringr, purrr, tibble, ggplot2...
+library(tidymodels)   # recipes, parsnip, workflows, tune, yardstick, rsample, dials
+library(textrecipes)  # step_tokenize(), step_tf(), step_tfidf(), step_word_embeddings()
+library(tidytext)     # unnest_tokens(), para la matriz TF ilustrativa
+library(glmnet)       # motor de la regresión logística LASSO
+library(stringi)      # stri_trans_general(), para sacar acentos
+library(here)         # rutas relativas a la raíz del repo, sin importar el wd
+
+theme_set(theme_minimal(base_size = 11))
+```
+
+```{r rutas}
+train_path <- here("data", "hateval_train_df.csv")
+dev_path   <- here("data", "hateval_dev_df.csv")
+test_path  <- here("data", "hateval_test_df.csv")
+```
+
+# TF con LASSO
+
+## Preparación de los datos
+
+Cargamos los tres splits de HatEval (`hateval_train_df.csv`,
+`hateval_dev_df.csv` y `hateval_test_df.csv`), nos quedamos en cada uno con
+los tweets en español y preprocesamos el texto:
+
+1. Convertimos a minúsculas
+2. Eliminamos URLs y menciones (`@usuario`), que son ruido propio de los tweets
+3. Eliminamos signos de puntuación
+4. Reemplazamos números por la palabra `DIGITO`
+5. Eliminamos acentos y caracteres no ASCII
+
+Para cada split, `text_clean` va a ser el texto preprocesado y `HS` la
+variable binaria (discurso de odio), convertida a factor para que
+`tidymodels` la trate como una tarea de clasificación. La codificamos con
+`levels = c("1", "0")` para que `"1"` (hay discurso de odio) sea el primer
+nivel — la clase "evento" por default en `yardstick` — igual que
+`classes_[1]` en scikit-learn.
+
+```{r preprocess-tf}
+preprocess_text <- function(text) {
+  text %>%
+    str_to_lower() %>%
+    # Eliminar URLs
+    str_replace_all("https?://\\S+|www\\.\\S+", " ") %>%
+    # Eliminar menciones (@usuario)
+    str_replace_all("@\\w+", " ") %>%
+    # Reemplazar puntuación
+    str_replace_all("[^\\w\\s]", " ") %>%
+    # Reemplazar números por 'DIGITO'
+    str_replace_all("\\d+", "DIGITO") %>%
+    # Eliminar acentos y otros caracteres no ASCII
+    stri_trans_general("Latin-ASCII") %>%
+    # Colapsar espacios múltiples
+    str_squish()
+}
+
+load_hateval_split <- function(path) {
+  read_csv(path, show_col_types = FALSE) %>%
+    filter(language == "es") %>%
+    mutate(
+      text_clean = preprocess_text(text),
+      HS = factor(HS, levels = c("1", "0"))
+    )
+}
+
+train_df <- load_hateval_split(train_path)
+dev_df   <- load_hateval_split(dev_path)
+test_df  <- load_hateval_split(test_path)
+
+glue::glue(
+  "Train: {nrow(train_df)} tweets | Dev: {nrow(dev_df)} tweets | Test: {nrow(test_df)} tweets"
+)
+```
+
+## Cómo se ve una matriz de Term Frequency
+
+Antes de armar el pipeline completo, vale la pena ver qué produce realmente
+una vectorización TF: una matriz donde cada fila es un documento (tweet) y
+cada columna una palabra del vocabulario, con la cantidad de veces que esa
+palabra aparece en ese documento.
+
+Usamos acá solo 4 oraciones cortas de ejemplo (no el corpus completo), con
+`tidytext::unnest_tokens()` + `dplyr::count()`, para que la matriz sea chica
+y legible. Con miles de tweets y ngramas de 1-2 palabras como en la sección
+siguiente, esta misma matriz tendría decenas de miles de columnas y sería
+casi toda ceros (una matriz **dispersa**, *sparse*) — por eso en el pipeline
+real usamos `textrecipes::step_tf()`, que guarda la matriz en formato
+disperso en vez de como un `data.frame` denso.
+
+```{r tf-ejemplo}
+# Oraciones de ejemplo (no son parte del dataset, son solo para ilustrar)
+ejemplo_tweets <- tibble(
+  id = 1:4,
+  text = c(
+    "no me gustan los inmigrantes en mi barrio",
+    "los inmigrantes trabajan mucho en mi barrio",
+    "amo la diversidad y a los inmigrantes",
+    "odio a la gente que no piensa como yo"
+  )
+)
+
+# Solo unigramas acá, a diferencia del pipeline real (1-2 gramas), para que
+# el vocabulario resultante sea chico y la matriz se pueda leer de un vistazo.
+# unnest_tokens() ya tokeniza y pasa a minúsculas por default.
+tf_ejemplo <- ejemplo_tweets %>%
+  unnest_tokens(word, text) %>%
+  count(id, word, name = "n") %>%
+  mutate(tweet = paste0("tweet ", id))
+
+tf_ejemplo_wide <- tf_ejemplo %>%
+  select(tweet, word, n) %>%
+  pivot_wider(names_from = word, values_from = n, values_fill = 0)
+
+tf_ejemplo_wide
+```
+
+```{r tf-ejemplo-heatmap, fig.width=9, fig.height=3}
+# Completamos con ceros los pares tweet x word que no aparecieron, para poder
+# graficar una grilla completa (equivalente a lo que ya hace la matriz densa
+# de un CountVectorizer)
+tf_ejemplo_long <- tf_ejemplo_wide %>%
+  pivot_longer(-tweet, names_to = "word", values_to = "n")
+
+# Rampa secuencial azul (superficie -> azul oscuro) para representar magnitud
+blue_ramp <- c("#fcfcfb", "#cde2fb", "#86b6ef", "#3987e5", "#184f95")
+
+ggplot(tf_ejemplo_long, aes(x = word, y = fct_rev(tweet), fill = n)) +
+  geom_tile(color = "#fcfcfb", linewidth = 1.5) +
+  geom_text(aes(label = n, color = n > 1), size = 3.2, show.legend = FALSE) +
+  scale_fill_gradientn(colors = blue_ramp, limits = c(0, max(tf_ejemplo_long$n))) +
+  scale_color_manual(values = c(`TRUE` = "white", `FALSE` = "#52514e")) +
+  labs(
+    title = "Matriz de Term Frequency (ejemplo ilustrativo, solo unigramas)",
+    x = NULL, y = NULL
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, color = "#52514e"),
+    axis.text.y = element_text(color = "#52514e"),
+    panel.grid = element_blank(),
+    legend.position = "none"
+  )
+```
+
+## Búsqueda de hiperparámetros usando el split de validación
+
+Armamos un `recipe` + `workflow` con:
+
+1. **Vectorización TF**: `step_tokenize()` + `step_ngram()` (ngramas de 1 y 2
+   palabras) + `step_tf()`
+2. **Regresión logística LASSO** (`mixture = 1`, motor `glmnet`)
+
+Para elegir el mejor valor de `penalty` (el equivalente en `glmnet` al
+inverso de `C` en scikit-learn: en `glmnet` **mayor** `penalty` implica
+**mayor** regularización, mientras que en scikit-learn era **menor** `C` el
+que implicaba mayor regularización) probamos 30 valores en escala
+logarítmica entre $10^{-10}$ y $10^{1}$. Como es una grilla que barre varios
+órdenes de magnitud en ambas direcciones, el sentido de la dirección no
+importa para la búsqueda: `tune_grid()` evalúa los 30 valores sobre `dev` y
+nos quedamos con el que da mejor ROC AUC, sea cual sea su magnitud.
+
+```{r recipe-tf}
+rec_tf <- recipe(HS ~ text_clean, data = train_df) %>%
+  step_tokenize(text_clean) %>%
+  step_ngram(text_clean, num_tokens = 2, min_num_tokens = 1) %>%
+  step_tf(text_clean)
+
+spec_lasso <- logistic_reg(penalty = tune(), mixture = 1) %>%
+  set_engine("glmnet") %>%
+  set_mode("classification")
+
+wf_tf <- workflow() %>%
+  add_recipe(rec_tf) %>%
+  add_model(spec_lasso)
+
+# Grilla de valores para el hiperparámetro de regularización
+penalty_grid <- tibble(penalty = 10^seq(-10, 1, length.out = 30))
+
+# rset de un solo split: analysis = train, assessment = dev
+# (el reemplazo, con datos ya separados, del vfold_cv() habitual)
+val_split_tf <- make_splits(train_df, dev_df)
+val_set_tf <- manual_rset(list(val_split_tf), ids = "validation")
+```
+
+```{r tune-tf}
+set.seed(234)
+tf_tune <- tune_grid(
+  wf_tf,
+  resamples = val_set_tf,
+  grid = penalty_grid,
+  metrics = metric_set(roc_auc)
+)
+
+best_penalty_tf <- select_best(tf_tune, metric = "roc_auc")
+
+glue::glue(
+  "Mejor valor de penalty: {signif(best_penalty_tf$penalty, 6)}"
+)
+show_best(tf_tune, metric = "roc_auc", n = 1)
+```
+
+## Modelo final
+
+Entrenamos el pipeline final sobre `train` con el mejor valor de `penalty`
+encontrado (`finalize_workflow()` + `fit()`) y evaluamos sobre `test` (que no
+participó ni del entrenamiento ni de la elección de hiperparámetros) con ROC
+AUC, accuracy, precision, recall y F1 (`yardstick::metric_set()`).
+
+```{r modelo-final-tf}
+final_wf_tf <- finalize_workflow(wf_tf, best_penalty_tf)
+final_fit_tf <- fit(final_wf_tf, data = train_df)
+
+test_pred_tf <- test_df %>%
+  bind_cols(predict(final_fit_tf, new_data = test_df, type = "prob")) %>%
+  bind_cols(predict(final_fit_tf, new_data = test_df, type = "class"))
+
+metrics_set <- metric_set(roc_auc, accuracy, precision, recall, f_meas)
+
+results_tf <- metrics_set(
+  test_pred_tf,
+  truth = HS, estimate = .pred_class, .pred_1,
+  event_level = "first"
+)
+
+results_tf
+```
+
+## Interpretación de los coeficientes
+
+Como el clasificador es una regresión logística **lineal** sobre features
+interpretables (cada columna del vectorizador es una palabra o bigrama),
+podemos mirar directamente los coeficientes para ver qué aprendió el modelo
+— no hace falta ninguna técnica de interpretabilidad externa (SHAP, LIME,
+etc.). Los extraemos con `coef()` sobre el ajuste de `glmnet` subyacente
+(`extract_fit_engine()`), fijando `s = ` en el valor de `penalty` elegido.
+
+Dos cosas para tener en cuenta al leerlos:
+
+- **LASSO selecciona variables**: la penalización L1 empuja a *exactamente
+  cero* los coeficientes de la enorme mayoría de las columnas del
+  vocabulario. Solo un puñado de n-gramas "sobrevive" con coeficiente
+  distinto de cero — son los que el modelo realmente usa para predecir.
+- **Signo y magnitud**: un coeficiente positivo empuja la predicción hacia
+  `HS=1` (discurso de odio); uno negativo, hacia `HS=0`. Como acá la
+  vectorización es TF (conteos crudos), `exp(coef)` tiene una lectura directa
+  como **odds ratio**: "cada aparición adicional de este término multiplica
+  las odds de que el tweet sea odio por `exp(coef)`" (manteniendo todo lo
+  demás constante).
+
+Nota: como el dataset es de discurso de odio, es esperable que los términos
+con coeficiente más alto incluyan insultos explícitos — es justamente lo que
+estamos buscando ver.
+
+```{r coeficientes-tf}
+tf_glmnet_fit <- extract_fit_engine(final_fit_tf)
+
+coef_df_tf <- coef(tf_glmnet_fit, s = best_penalty_tf$penalty) %>%
+  as.matrix() %>%
+  as_tibble(rownames = "feature") %>%
+  rename(coef = 2) %>%
+  filter(feature != "(Intercept)") %>%
+  mutate(
+    feature = str_remove(feature, "^tf_text_clean_"),
+    odds_ratio = exp(coef)
+  )
+
+n_total <- nrow(coef_df_tf)
+n_nonzero <- sum(coef_df_tf$coef != 0)
+glue::glue(
+  "Features totales: {n_total} | con coeficiente != 0 (seleccionadas por LASSO): ",
+  "{n_nonzero} ({round(n_nonzero / n_total * 100, 1)}%)"
+)
+
+top_pos_tf <- coef_df_tf %>% arrange(desc(coef)) %>% slice_head(n = 15)
+top_neg_tf <- coef_df_tf %>% arrange(coef) %>% slice_head(n = 15)
+
+top_pos_tf
+top_neg_tf
+```
+
+```{r coeficientes-tf-plot, fig.width=7, fig.height=8}
+top_terms_tf <- bind_rows(top_neg_tf, top_pos_tf) %>% arrange(coef)
+
+ggplot(top_terms_tf, aes(x = coef, y = fct_reorder(feature, coef),
+                          fill = coef > 0)) +
+  geom_col() +
+  geom_vline(xintercept = 0, color = "#898781", linewidth = 0.4) +
+  scale_fill_manual(values = c(`TRUE` = "#e34948", `FALSE` = "#2a78d6"), guide = "none") +
+  labs(
+    title = "Términos más predictivos — TF + LASSO",
+    x = "coeficiente (beta)", y = NULL
+  ) +
+  theme(panel.grid.major.y = element_blank())
+```
+
+## Análisis cualitativo de errores (FP y FN)
+
+Los coeficientes de arriba muestran qué términos aislados usa el modelo, pero
+no explican por qué se equivoca en un tweet concreto: combinaciones de
+palabras, ironía, negación o contexto que un modelo bag-of-words no puede
+captar. Miramos una muestra chica —**no representativa, solo ilustrativa**—
+de errores del modelo TF + LASSO sobre `test`:
+
+- **Falsos positivos (FP)**: el modelo predijo `HS=1` (odio) y en realidad
+  era `HS=0`.
+- **Falsos negativos (FN)**: el modelo predijo `HS=0` y en realidad era
+  `HS=1` (odio).
+
+En vez de tomar una muestra al azar, ordenamos los errores por la
+probabilidad predicha y nos quedamos con los más "confiados" del modelo: los
+FP con la probabilidad más alta (el modelo estaba casi seguro de que era
+odio) y los FN con la probabilidad más baja (estaba casi seguro de que no lo
+era). Son los casos más informativos para pensar los límites del enfoque.
+
+```{r errores-tf}
+n_ejemplos <- 5
+
+errores_df <- test_pred_tf %>%
+  select(text, y_true = HS, y_pred = .pred_class, proba = .pred_1)
+
+falsos_positivos <- errores_df %>% filter(y_true == "0", y_pred == "1")
+falsos_negativos <- errores_df %>% filter(y_true == "1", y_pred == "0")
+
+glue::glue("Falsos positivos: {nrow(falsos_positivos)} de {nrow(errores_df)} tweets en test")
+glue::glue("Falsos negativos: {nrow(falsos_negativos)} de {nrow(errores_df)} tweets en test")
+
+# FP más "confiados": proba más cercana a 1
+fp_muestra <- falsos_positivos %>% arrange(desc(proba)) %>% slice_head(n = n_ejemplos)
+# FN más "confiados": proba más cercana a 0
+fn_muestra <- falsos_negativos %>% arrange(proba) %>% slice_head(n = n_ejemplos)
+
+cat("\n--- Falsos Positivos: predijo HS=1, en realidad era HS=0 ---\n")
+walk2(fp_muestra$proba, fp_muestra$text, ~ cat(sprintf("[p(HS)=%.2f] %s\n", .x, .y)))
+
+cat("\n--- Falsos Negativos: predijo HS=0, en realidad era HS=1 ---\n")
+walk2(fn_muestra$proba, fn_muestra$text, ~ cat(sprintf("[p(HS)=%.2f] %s\n", .x, .y)))
+```
+
+## Análisis cualitativo de aciertos (TP y TN)
+
+Como contraparte de los errores, miramos también los aciertos más claros del
+modelo: verdaderos positivos (TP, predijo `HS=1` y era `HS=1`) y verdaderos
+negativos (TN, predijo `HS=0` y era `HS=0`), tomando de nuevo los casos donde
+el modelo estuvo más "confiado".
+
+```{r aciertos-tf}
+verdaderos_positivos <- errores_df %>% filter(y_true == "1", y_pred == "1")
+verdaderos_negativos <- errores_df %>% filter(y_true == "0", y_pred == "0")
+
+glue::glue("Verdaderos positivos: {nrow(verdaderos_positivos)} de {nrow(errores_df)} tweets en test")
+glue::glue("Verdaderos negativos: {nrow(verdaderos_negativos)} de {nrow(errores_df)} tweets en test")
+
+tp_muestra <- verdaderos_positivos %>% arrange(desc(proba)) %>% slice_head(n = n_ejemplos)
+tn_muestra <- verdaderos_negativos %>% arrange(proba) %>% slice_head(n = n_ejemplos)
+
+cat("\n--- Verdaderos Positivos: predijo HS=1, era HS=1 ---\n")
+walk2(tp_muestra$proba, tp_muestra$text, ~ cat(sprintf("[p(HS)=%.2f] %s\n", .x, .y)))
+
+cat("\n--- Verdaderos Negativos: predijo HS=0, era HS=0 ---\n")
+walk2(tn_muestra$proba, tn_muestra$text, ~ cat(sprintf("[p(HS)=%.2f] %s\n", .x, .y)))
+```
+
+### Qué mirar en estos ejemplos
+
+Como en el notebook original en Python, vale la pena leer los FP/FN con dos
+límites estructurales de bag-of-words en mente:
+
+- **El modelo detecta la palabra, no la función que cumple.** Un
+  insulto/slur puede aparecer en un tweet que en realidad lo **cita** para
+  denunciarlo, que lo usa como jerga o como interjección de asombro (muy
+  común en el habla rioplatense), o como insulto interpersonal puntual que
+  no constituye odio *sistémico* hacia un grupo (recordá que HatEval define
+  `HS=1` como odio dirigido a mujeres o inmigrantes **como grupo**). TF/TF-IDF
+  no tiene forma de representar negación, cita, ironía o función pragmática
+  — solo detecta *presencia* de un término con peso alto.
+- **Los pesos se suman de forma lineal e independiente.** Si un tweet
+  combina un término con coeficiente muy negativo (por ejemplo, un insulto
+  genérico frecuente en discurso *no* dirigido a un grupo) con un slur real
+  con coeficiente positivo, el peso negativo puede **cancelar** al positivo
+  y arrastrar la predicción hacia `HS=0` aunque el tweet sí contenga odio
+  real dirigido a un grupo.
+
+Los términos concretos que vas a ver en tu corrida (`fp_muestra`,
+`fn_muestra`, etc.) van a depender del tokenizador y de la semilla, así que
+pueden no ser exactamente los mismos que en la corrida de referencia en
+Python — pero el patrón (bag-of-words no entiende cita/negación/ironía, y
+las contribuciones lineales se pueden cancelar) sí debería repetirse.
+
+# TF-IDF con LASSO
+
+A diferencia de TF (que solo cuenta ocurrencias), **TF-IDF** pondera cada
+término según qué tan frecuente es dentro de un tweet (TF) pero penalizando
+los términos que aparecen en muchos tweets distintos (IDF). Esto suele
+darle más peso a palabras discriminativas y menos a palabras muy comunes.
+
+Reutilizamos los mismos `train_df`/`dev_df`/`test_df` de la sección anterior,
+y repetimos el mismo procedimiento (elegir `penalty` con el split de
+validación y evaluar sobre test) pero con `textrecipes::step_tfidf()` en
+lugar de `step_tf()`.
+
+```{r recipe-tfidf}
+rec_tfidf <- recipe(HS ~ text_clean, data = train_df) %>%
+  step_tokenize(text_clean) %>%
+  step_ngram(text_clean, num_tokens = 2, min_num_tokens = 1) %>%
+  step_tfidf(text_clean)
+
+wf_tfidf <- workflow() %>%
+  add_recipe(rec_tfidf) %>%
+  add_model(spec_lasso)
+```
+
+```{r tune-tfidf}
+set.seed(234)
+tfidf_tune <- tune_grid(
+  wf_tfidf,
+  resamples = val_set_tf,
+  grid = penalty_grid,
+  metrics = metric_set(roc_auc)
+)
+
+best_penalty_tfidf <- select_best(tfidf_tune, metric = "roc_auc")
+
+glue::glue("Mejor valor de penalty: {signif(best_penalty_tfidf$penalty, 6)}")
+show_best(tfidf_tune, metric = "roc_auc", n = 1)
+```
+
+```{r modelo-final-tfidf}
+final_wf_tfidf <- finalize_workflow(wf_tfidf, best_penalty_tfidf)
+final_fit_tfidf <- fit(final_wf_tfidf, data = train_df)
+
+test_pred_tfidf <- test_df %>%
+  bind_cols(predict(final_fit_tfidf, new_data = test_df, type = "prob")) %>%
+  bind_cols(predict(final_fit_tfidf, new_data = test_df, type = "class"))
+
+results_tfidf <- metrics_set(
+  test_pred_tfidf,
+  truth = HS, estimate = .pred_class, .pred_1,
+  event_level = "first"
+)
+
+results_tfidf
+```
+
+## Interpretación de los coeficientes
+
+Repetimos el mismo análisis que en la sección de TF, pero con una diferencia
+importante en cómo se leen los coeficientes acá.
+
+- **LASSO sigue seleccionando variables**: de nuevo, la gran mayoría de los
+  coeficientes del vocabulario quedan en cero; solo sobrevive un subconjunto
+  chico.
+- **El odds ratio ya no tiene la misma lectura "por ocurrencia".** En TF cada
+  feature era un conteo entero (0, 1, 2, ...), así que `exp(coef)` se
+  interpretaba como "cuánto multiplica las odds cada aparición adicional".
+  Acá cada feature es un **score TF-IDF continuo**, y además cada vector de
+  tweet se normaliza (norma L2 — el default de `step_tfidf()`, igual que en
+  `TfidfVectorizer`). Un "incremento de una unidad" en ese score no
+  corresponde a nada tan intuitivo como "una palabra más" — por eso acá **no**
+  mostramos la columna de odds ratio. El signo y el orden relativo entre
+  términos siguen siendo perfectamente interpretables; lo que se pierde es la
+  lectura "por ocurrencia" en unidades naturales.
+
+```{r coeficientes-tfidf}
+tfidf_glmnet_fit <- extract_fit_engine(final_fit_tfidf)
+
+coef_df_tfidf <- coef(tfidf_glmnet_fit, s = best_penalty_tfidf$penalty) %>%
+  as.matrix() %>%
+  as_tibble(rownames = "feature") %>%
+  rename(coef = 2) %>%
+  filter(feature != "(Intercept)") %>%
+  mutate(feature = str_remove(feature, "^tfidf_text_clean_"))
+
+n_total <- nrow(coef_df_tfidf)
+n_nonzero <- sum(coef_df_tfidf$coef != 0)
+glue::glue(
+  "Features totales: {n_total} | con coeficiente != 0 (seleccionadas por LASSO): ",
+  "{n_nonzero} ({round(n_nonzero / n_total * 100, 1)}%)"
+)
+
+top_pos_tfidf <- coef_df_tfidf %>% arrange(desc(coef)) %>% slice_head(n = 15)
+top_neg_tfidf <- coef_df_tfidf %>% arrange(coef) %>% slice_head(n = 15)
+
+top_pos_tfidf
+top_neg_tfidf
+```
+
+```{r coeficientes-tfidf-plot, fig.width=7, fig.height=8}
+top_terms_tfidf <- bind_rows(top_neg_tfidf, top_pos_tfidf) %>% arrange(coef)
+
+ggplot(top_terms_tfidf, aes(x = coef, y = fct_reorder(feature, coef),
+                             fill = coef > 0)) +
+  geom_col() +
+  geom_vline(xintercept = 0, color = "#898781", linewidth = 0.4) +
+  scale_fill_manual(values = c(`TRUE` = "#e34948", `FALSE` = "#2a78d6"), guide = "none") +
+  labs(
+    title = "Términos más predictivos — TF-IDF + LASSO",
+    x = "coeficiente (beta)", y = NULL
+  ) +
+  theme(panel.grid.major.y = element_blank())
+```
+
+## Análisis cualitativo de errores y aciertos (FP, FN, TP, TN)
+
+Repetimos el mismo esquema de la sección de TF, ahora con las predicciones
+del modelo TF-IDF + LASSO.
+
+```{r errores-aciertos-tfidf}
+n_ejemplos <- 5
+
+errores_df_tfidf <- test_pred_tfidf %>%
+  select(text, y_true = HS, y_pred = .pred_class, proba = .pred_1)
+
+falsos_positivos_tfidf <- errores_df_tfidf %>% filter(y_true == "0", y_pred == "1")
+falsos_negativos_tfidf <- errores_df_tfidf %>% filter(y_true == "1", y_pred == "0")
+verdaderos_positivos_tfidf <- errores_df_tfidf %>% filter(y_true == "1", y_pred == "1")
+verdaderos_negativos_tfidf <- errores_df_tfidf %>% filter(y_true == "0", y_pred == "0")
+
+glue::glue("Falsos positivos: {nrow(falsos_positivos_tfidf)} de {nrow(errores_df_tfidf)} tweets en test")
+glue::glue("Falsos negativos: {nrow(falsos_negativos_tfidf)} de {nrow(errores_df_tfidf)} tweets en test")
+
+fp_muestra_tfidf <- falsos_positivos_tfidf %>% arrange(desc(proba)) %>% slice_head(n = n_ejemplos)
+fn_muestra_tfidf <- falsos_negativos_tfidf %>% arrange(proba) %>% slice_head(n = n_ejemplos)
+tp_muestra_tfidf <- verdaderos_positivos_tfidf %>% arrange(desc(proba)) %>% slice_head(n = n_ejemplos)
+tn_muestra_tfidf <- verdaderos_negativos_tfidf %>% arrange(proba) %>% slice_head(n = n_ejemplos)
+
+cat("\n--- Falsos Positivos: predijo HS=1, en realidad era HS=0 ---\n")
+walk2(fp_muestra_tfidf$proba, fp_muestra_tfidf$text, ~ cat(sprintf("[p(HS)=%.2f] %s\n", .x, .y)))
+
+cat("\n--- Falsos Negativos: predijo HS=0, en realidad era HS=1 ---\n")
+walk2(fn_muestra_tfidf$proba, fn_muestra_tfidf$text, ~ cat(sprintf("[p(HS)=%.2f] %s\n", .x, .y)))
+
+cat("\n--- Verdaderos Positivos: predijo HS=1, era HS=1 ---\n")
+walk2(tp_muestra_tfidf$proba, tp_muestra_tfidf$text, ~ cat(sprintf("[p(HS)=%.2f] %s\n", .x, .y)))
+
+cat("\n--- Verdaderos Negativos: predijo HS=0, era HS=0 ---\n")
+walk2(tn_muestra_tfidf$proba, tn_muestra_tfidf$text, ~ cat(sprintf("[p(HS)=%.2f] %s\n", .x, .y)))
+```
+
+Vale la pena comparar estos ejemplos con los de la sección de TF: si
+coinciden en los mismos tweets "difíciles" es señal de que el problema es del
+tweet (cita, ironía, insulto sin dirigirse a un grupo) y no de la
+representación puntual (TF vs. TF-IDF).
+
+# Word embeddings como features
+
+## Idea general
+
+En lugar de representar cada tweet como un vector disperso de conteos (TF) o
+pesos (TF-IDF) sobre el vocabulario, ahora vamos a representarlo como el
+**promedio de los vectores de embedding preentrenados** de sus palabras.
+Usamos los embeddings estáticos en español **SBWCE**
+(`SBW-vectors-300-min5`, ya descargados al inicio del notebook), donde cada
+palabra se representa con un vector denso de 300 dimensiones.
+
+El preprocesamiento acá es más simple: solo eliminamos URLs y menciones, y
+reemplazamos números por `DIGITO`. No hace falta sacar puntuación ni acentos
+porque las palabras que no estén en el vocabulario de los embeddings
+simplemente se ignoran (*out-of-vocabulary*).
+
+Como en las secciones anteriores, vectorizamos por separado los tweets en
+español de `train`, `dev` y `test`.
+
+En `tidymodels`, el promedio de embeddings preentrenados no hace falta
+programarlo a mano (como el `get_mean_vector()` de `gensim` en la versión
+Python): `textrecipes::step_word_embeddings()` toma directamente una tabla de
+embeddings (una fila por palabra, una columna por dimensión) y arma el
+promedio (`aggregation = "mean"`) dentro del `recipe`, con el mismo manejo de
+palabras *out-of-vocabulary* (se ignoran) y de tweets vacíos (vector de
+ceros, vía `aggregation_default = 0`).
+
+```{r cargar-embeddings}
+library(word2vec)
+
+preprocess_text_embed <- function(text) {
+  text %>%
+    str_replace_all("https?://\\S+|www\\.\\S+", " ") %>%
+    str_replace_all("@\\w+", " ") %>%
+    str_replace_all("\\d+", "DIGITO")
+}
+
+load_hateval_split_embed <- function(path) {
+  read_csv(path, show_col_types = FALSE) %>%
+    filter(language == "es") %>%
+    mutate(
+      text_clean = preprocess_text_embed(text),
+      HS = factor(HS, levels = c("1", "0"))
+    )
+}
+
+train_df_embed <- load_hateval_split_embed(train_path)
+dev_df_embed   <- load_hateval_split_embed(dev_path)
+test_df_embed  <- load_hateval_split_embed(test_path)
+
+# Cargamos el modelo de word embeddings preentrenado (formato word2vec binario)
+message("Cargando embeddings...")
+word_vectors <- read.word2vec(
+  file = here("models", "SBW-vectors-300-min5.bin"),
+  normalize = FALSE
+)
+
+# Lo convertimos en la tabla token + dimensiones que espera step_word_embeddings()
+wv_matrix <- as.matrix(word_vectors)
+colnames(wv_matrix) <- paste0("d", seq_len(ncol(wv_matrix)))
+embeddings_tbl <- as_tibble(wv_matrix, rownames = "token")
+
+dim(embeddings_tbl)
+```
+
+## Búsqueda de hiperparámetros usando el split de validación
+
+Repetimos el mismo esquema que en las secciones anteriores: el `recipe`
+tokeniza y promedia embeddings, el `workflow` lo combina con la regresión
+logística LASSO, y `tune_grid()` sobre el `rset` de `train`/`dev` elige el
+`penalty` con mejor ROC AUC en `dev`.
+
+```{r recipe-embed}
+rec_embed <- recipe(HS ~ text_clean, data = train_df_embed) %>%
+  step_tokenize(text_clean) %>%
+  step_word_embeddings(text_clean, embeddings = embeddings_tbl, aggregation = "mean")
+
+wf_embed <- workflow() %>%
+  add_recipe(rec_embed) %>%
+  add_model(spec_lasso)
+
+val_split_embed <- make_splits(train_df_embed, dev_df_embed)
+val_set_embed <- manual_rset(list(val_split_embed), ids = "validation")
+```
+
+```{r tune-embed}
+set.seed(234)
+message("Buscando el mejor valor de penalty...")
+embed_tune <- tune_grid(
+  wf_embed,
+  resamples = val_set_embed,
+  grid = penalty_grid,
+  metrics = metric_set(roc_auc)
+)
+
+best_penalty_embed <- select_best(embed_tune, metric = "roc_auc")
+
+glue::glue("Mejor valor de penalty: {signif(best_penalty_embed$penalty, 6)}")
+show_best(embed_tune, metric = "roc_auc", n = 1)
+```
+
+```{r modelo-final-embed}
+final_wf_embed <- finalize_workflow(wf_embed, best_penalty_embed)
+final_fit_embed <- fit(final_wf_embed, data = train_df_embed)
+
+test_pred_embed <- test_df_embed %>%
+  bind_cols(predict(final_fit_embed, new_data = test_df_embed, type = "prob")) %>%
+  bind_cols(predict(final_fit_embed, new_data = test_df_embed, type = "class"))
+
+results_embed <- metrics_set(
+  test_pred_embed,
+  truth = HS, estimate = .pred_class, .pred_1,
+  event_level = "first"
+)
+
+results_embed
+```
+
+## Los coeficientes acá no son interpretables
+
+En TF y TF-IDF pudimos leer directamente los coeficientes porque cada
+columna del vectorizador **es** una palabra: el coeficiente de la columna
+"zorra" nos dice literalmente cuánto pesa la palabra "zorra". Acá eso se
+rompe.
+
+Los coeficientes del modelo final también tienen 300 valores (uno por
+columna generada por `step_word_embeddings()`), pero esas 300 columnas son
+`wordembed_text_clean_d1`, `wordembed_text_clean_d2`, ...:
+**dimensiones abstractas** del espacio vectorial que aprendió SBWCE al
+entrenarse sobre un corpus enorme, no conceptos con un nombre. No hay una
+función que devuelva "nombres" de features acá, como sí existía para TF/TF-IDF
+(el propio vocabulario), porque no hay "nombres" que devolver — cada
+dimensión mezcla, de una forma que no fue diseñada para ser legible por
+humanos, información sobre miles de palabras distintas.
+
+Así que aunque técnicamente podamos calcular "el coeficiente de d142 es
+0.6", esa afirmación no nos dice nada sobre *qué tipo de tweet* empuja el
+modelo hacia `HS=1` — a diferencia de "el coeficiente de 'zorra' es 1.5" en
+TF, que sí es una afirmación con contenido. Es el precio de usar una
+representación densa y aprendida en otro corpus: se gana la capacidad de
+capturar relaciones semánticas entre palabras (sinónimos, analogías), pero
+se pierde la interpretabilidad directa palabra-por-palabra que tienen TF y
+TF-IDF por construcción.
+
+```{r coeficientes-embed}
+embed_glmnet_fit <- extract_fit_engine(final_fit_embed)
+
+coef_df_embed <- coef(embed_glmnet_fit, s = best_penalty_embed$penalty) %>%
+  as.matrix() %>%
+  as_tibble(rownames = "dimension") %>%
+  rename(coef = 2) %>%
+  filter(dimension != "(Intercept)")
+
+n_total <- nrow(coef_df_embed)
+n_nonzero <- sum(coef_df_embed$coef != 0)
+glue::glue(
+  "Features totales: {n_total} | con coeficiente != 0 (seleccionadas por LASSO): ",
+  "{n_nonzero} ({round(n_nonzero / n_total * 100, 1)}%)"
+)
+
+coef_df_embed %>% arrange(desc(coef)) %>% slice_head(n = 5)
+```
+
+(Para interpretar qué "significa" una dimensión de embeddings hacen falta
+técnicas indirectas — por ejemplo, buscar qué palabras del vocabulario tienen
+los valores más altos/bajos en esa dimensión particular, o proyectar el
+espacio a 2D con t-SNE/UMAP — que quedan fuera del alcance de este notebook.)
+
+## Análisis cualitativo de errores y aciertos (FP, FN, TP, TN)
+
+Como hicimos para TF-IDF, miramos una muestra chica de los errores y
+aciertos del modelo de embeddings sobre `test`, con el mismo criterio: los
+casos donde el modelo estuvo más "confiado".
+
+```{r errores-aciertos-embed}
+n_ejemplos <- 5
+
+errores_df_embed <- test_pred_embed %>%
+  select(text, y_true = HS, y_pred = .pred_class, proba = .pred_1)
+
+falsos_positivos_embed <- errores_df_embed %>% filter(y_true == "0", y_pred == "1")
+falsos_negativos_embed <- errores_df_embed %>% filter(y_true == "1", y_pred == "0")
+verdaderos_positivos_embed <- errores_df_embed %>% filter(y_true == "1", y_pred == "1")
+verdaderos_negativos_embed <- errores_df_embed %>% filter(y_true == "0", y_pred == "0")
+
+glue::glue("Falsos positivos: {nrow(falsos_positivos_embed)} de {nrow(errores_df_embed)} tweets en test")
+glue::glue("Falsos negativos: {nrow(falsos_negativos_embed)} de {nrow(errores_df_embed)} tweets en test")
+
+fp_muestra_embed <- falsos_positivos_embed %>% arrange(desc(proba)) %>% slice_head(n = n_ejemplos)
+fn_muestra_embed <- falsos_negativos_embed %>% arrange(proba) %>% slice_head(n = n_ejemplos)
+tp_muestra_embed <- verdaderos_positivos_embed %>% arrange(desc(proba)) %>% slice_head(n = n_ejemplos)
+tn_muestra_embed <- verdaderos_negativos_embed %>% arrange(proba) %>% slice_head(n = n_ejemplos)
+
+cat("\n--- Falsos Positivos: predijo HS=1, en realidad era HS=0 ---\n")
+walk2(fp_muestra_embed$proba, fp_muestra_embed$text, ~ cat(sprintf("[p(HS)=%.2f] %s\n", .x, .y)))
+
+cat("\n--- Falsos Negativos: predijo HS=0, en realidad era HS=1 ---\n")
+walk2(fn_muestra_embed$proba, fn_muestra_embed$text, ~ cat(sprintf("[p(HS)=%.2f] %s\n", .x, .y)))
+
+cat("\n--- Verdaderos Positivos: predijo HS=1, era HS=1 ---\n")
+walk2(tp_muestra_embed$proba, tp_muestra_embed$text, ~ cat(sprintf("[p(HS)=%.2f] %s\n", .x, .y)))
+
+cat("\n--- Verdaderos Negativos: predijo HS=0, era HS=0 ---\n")
+walk2(tn_muestra_embed$proba, tn_muestra_embed$text, ~ cat(sprintf("[p(HS)=%.2f] %s\n", .x, .y)))
+```
+
+### Qué esperar de estos ejemplos
+
+Comparando con TF-IDF, hay dos patrones que vale la pena buscar en tu propia
+corrida:
+
+- **Los mismos FP "de cita/jerga/interjección"** que en TF-IDF: si
+  bag-of-words y embeddings comparten un falso positivo, confirma que el
+  problema no es de la representación — ninguna de las dos entiende cita,
+  negación o discurso reportado.
+- **Dilución en tweets largos.** Este es el costo estructural específico del
+  *mean pooling*: cada palabra pesa `1/n` del vector final, así que cuanto
+  más larga la oración alrededor de un slur, menos peso relativo tiene esa
+  única palabra cargada — a diferencia de TF-IDF, donde una palabra con
+  coeficiente alto conserva todo su peso sin importar cuántas otras palabras
+  tenga el tweet alrededor. Esto suele verse como una caída en el *recall*
+  del modelo de embeddings frente a TF-IDF, sobre todo en tweets largos con
+  el slur "enterrado" entre palabras funcionales neutras.
+
+# Comparación de resultados
+
+Juntamos las métricas de desempeño de las tres representaciones, evaluadas
+sobre `test`.
+
+```{r comparacion}
+comparison_df <- bind_rows(
+  results_tf    %>% mutate(model = "TF"),
+  results_tfidf %>% mutate(model = "TF-IDF"),
+  results_embed %>% mutate(model = "Word Embeddings")
+) %>%
+  select(model, .metric, .estimate) %>%
+  pivot_wider(names_from = .metric, values_from = .estimate) %>%
+  select(model, roc_auc, f_meas, precision, recall, accuracy)
+
+comparison_df
+```
+
+```{r comparacion-plot, fig.width=7, fig.height=4}
+comparison_df %>%
+  pivot_longer(-model, names_to = "metric", values_to = "value") %>%
+  mutate(model = factor(model, levels = c("TF", "TF-IDF", "Word Embeddings"))) %>%
+  ggplot(aes(x = metric, y = value, fill = model)) +
+  geom_col(position = position_dodge(width = 0.75), width = 0.7) +
+  scale_fill_manual(values = c("TF" = "#3987e5", "TF-IDF" = "#184f95",
+                                "Word Embeddings" = "#e34948")) +
+  labs(title = "Comparación de métricas sobre test", x = NULL, y = NULL, fill = NULL) +
+  theme(legend.position = "top")
+```
+
+# Conclusiones
+
+Como referencia, estos son los resultados de una corrida real del notebook
+**original en Python** (con el SBWCE real, no simulado) — todavía no
+ejecutamos este notebook en R, así que no tenemos una tabla propia de
+resultados para citar acá:
+
+| | ROC AUC | F1 | Precision | Recall |
+|---|---|---|---|---|
+| TF | 0.777 | 0.665 | 0.636 | 0.697 |
+| TF-IDF | 0.773 | 0.665 | 0.591 | 0.759 |
+| Word Embeddings | 0.759 | 0.596 | 0.674 | 0.533 |
+
+Reemplazá esta tabla por la que produjo tu propio `comparison_df` al correr
+este notebook: los valores exactos van a variar (distinto tokenizador,
+distinta parametrización de la regularización en `glmnet` vs. `liblinear`,
+distinta semilla) — lo que importa es el **patrón**, no el número puntual.
+Con eso dicho, estas son las lecturas generales que motivaron el ejercicio y
+que deberías poder chequear contra tu propia tabla:
+
+## Desempeño: TF y TF-IDF suelen ganarle a embeddings acá
+
+Tiene sentido para *hate speech*: la señal discriminativa suele estar en
+palabras o frases puntuales (insultos, *slurs* específicos), y una LASSO
+sobre 1-2 gramas puede aislar exactamente esos términos con un coeficiente
+alto. El promedio de embeddings, en cambio, diluye esa señal — mezcla todas
+las palabras del tweet en un solo vector de 300 dimensiones, perdiendo cuál
+palabra puntual disparó el odio. Con pocos miles de tweets de entrenamiento
+tampoco hay tanto margen para que embeddings compense por generalización
+semántica.
+
+**El trade-off precision/recall suele ser la diferencia más interesante y
+práctica.** En la corrida de referencia, TF-IDF prioriza recall a costa de
+precision: atrapa más discurso de odio real pero con más falsos positivos.
+Embeddings suele hacer lo opuesto: mayor precision, menor recall — es
+conservador, se pierde una porción mayor del odio real. Si el costo de dejar
+pasar contenido de odio es alto, TF-IDF suele ser preferible; si el costo de
+un falso positivo es alto (por ejemplo, penalizar cuentas por error),
+embeddings.
+
+## Interpretabilidad: otro punto a favor de TF/TF-IDF
+
+Además de predecir (típicamente) mejor acá, TF y TF-IDF tienen una ventaja
+que no aparece en las métricas: son **interpretables por construcción**.
+Pudimos mostrar exactamente qué palabras y bigramas asocia el modelo con
+`HS=1` y con `HS=0`, con una lectura directa (para TF, incluso cuantificable
+como odds ratio). Con embeddings esa lectura no existe: los coeficientes del
+modelo final corresponden a dimensiones abstractas del espacio vectorial
+preentrenado, sin un vocabulario que las traduzca a algo legible.
+
+Esto importa más allá de la curiosidad académica: si en algún momento hay que
+auditar por qué el modelo marcó un tweet como discurso de odio (por ejemplo,
+para explicarle una decisión a un usuario, o para detectar sesgos del
+modelo), TF y TF-IDF permiten esa auditoría de forma directa; embeddings no.
+
+## Conclusión práctica
+
+Para esta tarea puntual, con este modelo lineal y esta cantidad de datos, es
+esperable que **TF-IDF sea (o esté muy cerca de ser) la opción dominante**:
+buen F1, buen recall, y — como TF — permite interpretar directamente qué
+aprendió el modelo. Embeddings puede perder en desempeño y además sacrifica
+la interpretabilidad, sin compensarlo con una ventaja clara acá — un
+resultado legítimo y pedagógicamente útil: una representación "más
+sofisticada" no gana automáticamente, sobre todo cuando se la usa de forma
+simple (promedio de vectores) en una tarea donde palabras puntuales importan
+más que el significado semántico agregado, y con pocos datos de
+entrenamiento.
+
+# Ejercicio
+
+Entrenar y tunear un **Random Forest** (`parsnip::rand_forest()` con motor
+`"ranger"`) usando features construidas con TF-IDF y otro con embeddings,
+para clasificar los tweets en español del dataset HatEval. Usá el mismo
+esquema que en este notebook: elegí los hiperparámetros (por ejemplo `mtry` y
+`min_n`, vía `tune()` + `tune_grid()`) con el `rset` de `dev`
+(`val_set_tf`/`val_set_embed`, según corresponda) y reportá el desempeño
+final sobre `test` (ROC AUC, accuracy, precision, recall, F1) con
+`metrics_set`.
+
+¿Cuál resulta más eficaz? ¿Por qué?
+
+Como desafío adicional: ¿qué esperarías que pase si usás estos mismos
+embeddings en español (SBWCE) para vectorizar los tweets en **inglés** del
+dataset (`language == "en"`)?
+
+```{r ejercicio, eval=FALSE}
+###
+```
