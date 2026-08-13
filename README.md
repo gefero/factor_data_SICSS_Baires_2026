@@ -42,7 +42,7 @@ Colab/Drive usadas en cada práctica.
 |---|---|---|---|---|
 | [`cap0/`](cap0) | [`00 - SICSS-BAires - Topic Modeling.pdf`](<cap0/00 - SICSS-BAires - Topic Modeling.pdf>) | Introducción a NLP y modelado de tópicos (LDA) | [M0](https://docs.google.com/presentation/d/1ZoOBD8BvoVZkAu_58hRxQe2xowutgVfrsGJo3tR4QeY/edit?usp=sharing) | [M0](https://drive.google.com/file/d/1dpL7G5Cp5Zpi3Rkzp1MrTSYRG_VjCAN0/view?usp=drive_link) |
 | [`cap1/`](cap1) | [`01 - SICSS-BAires - Embeddings.pdf`](<cap1/01 - SICSS-BAires - Embeddings.pdf>), [`01 - SICSS-BAires - Ilustracion Embeddings.ipynb`](<cap1/01 - SICSS-BAires - Ilustracion Embeddings.ipynb>) | Word embeddings estáticos (word2vec) | [M1](https://docs.google.com/presentation/d/1AQ9mwtzUg23ePFU37xi0usMqIVRizvyefeBVp8fatEY/edit?usp=sharing) | [M1](https://colab.research.google.com/drive/1UUr5TWTf1DR-U_QGNyFxaYhtA9Vj06WP?usp=sharing) |
-| [`cap2/`](cap2) | [`02 -  SICSS - BAires - Transformers.pdf`](<cap2/02 -  SICSS - BAires - Transformers.pdf>) | Arquitectura Transformer y self-attention | [M2](https://docs.google.com/presentation/d/1WW7WRTLpKdnNJDQY3j9FnNpOSMYSC27IQILWU98lOoA/edit?usp=sharing) | [M2](https://colab.research.google.com/drive/1bTeXc6RHtIQaOcD0v1C5YTE2VKTQ-hlI?usp=sharing) |
+| [`cap2/`](cap2) | [`02 -  SICSS - BAires - Transformers.pdf`](<cap2/02 -  SICSS - BAires - Transformers.pdf>), [`02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb`](<cap2/02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb>) | Arquitectura Transformer y self-attention | [M2](https://docs.google.com/presentation/d/1WW7WRTLpKdnNJDQY3j9FnNpOSMYSC27IQILWU98lOoA/edit?usp=sharing) | [M2](https://colab.research.google.com/drive/1bTeXc6RHtIQaOcD0v1C5YTE2VKTQ-hlI?usp=sharing) |
 | [`cap3/`](cap3) | [`03 - SICSS-Baires - LLMs.pdf`](<cap3/03 - SICSS-Baires - LLMs.pdf>) | Large Language Models y prompt engineering | [M3](https://docs.google.com/presentation/d/1mtF_NDhC8dnK7CAWxcgTcdErfrcu2EPxe5JPe-L2yuE/edit?usp=sharing) | — |
 
 #### `cap0/` — Clase 0: Detectando tópicos en un corpus (68 slides)
@@ -77,12 +77,22 @@ promedio de cada dimensión.
 - [Slides (Google Slides)](https://docs.google.com/presentation/d/1AQ9mwtzUg23ePFU37xi0usMqIVRizvyefeBVp8fatEY/edit?usp=sharing)
 - [Notebook (Google Colab)](https://colab.research.google.com/drive/1UUr5TWTf1DR-U_QGNyFxaYhtA9Vj06WP?usp=sharing)
 
-#### `cap2/` — Clase 2: Transformers (32 slides)
+#### `cap2/` — Clase 2: Transformers (32 slides + notebook)
 
 De los modelos secuenciales (RNN) a los Transformers: embeddings de
 entrada/salida, self-attention (vectores Query/Key/Value), atención multicabezal
 (multi-head attention) y positional encoding. Reseña de GPT y BERT. Incluye
 consignas hands-on con `pysentimiento` sobre un dataset de comentarios.
+
+La notebook [`02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb`](<cap2/02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb>)
+usa el modelo de discurso de odio en español de `pysentimiento` (RoBERTuito
+fine-tuneado) para predecir `HS` sobre el split de test de HatEval
+(`data/hateval_test_df.csv`), y compara el resultado contra las
+representaciones clásicas (TF, TF-IDF, embeddings) de `cap0/`.
+
+- **Dependencias:** `pysentimiento`, `transformers`, `torch`, `pandas`,
+  `scikit-learn`, `matplotlib`, `seaborn`.
+- **Datos:** `data/hateval_test_df.csv` (ya versionado en el repo).
 
 - [Slides (Google Slides)](https://docs.google.com/presentation/d/1WW7WRTLpKdnNJDQY3j9FnNpOSMYSC27IQILWU98lOoA/edit?usp=sharing)
 - [Notebook (Google Colab)](https://colab.research.google.com/drive/1bTeXc6RHtIQaOcD0v1C5YTE2VKTQ-hlI?usp=sharing)
@@ -175,7 +185,7 @@ practice.
 |---|---|---|---|---|
 | [`cap0/`](cap0) | [`00 - SICSS-BAires - Topic Modeling.pdf`](<cap0/00 - SICSS-BAires - Topic Modeling.pdf>) | Intro to NLP and topic modeling (LDA) | [M0](https://docs.google.com/presentation/d/1ZoOBD8BvoVZkAu_58hRxQe2xowutgVfrsGJo3tR4QeY/edit?usp=sharing) | [M0](https://drive.google.com/file/d/1dpL7G5Cp5Zpi3Rkzp1MrTSYRG_VjCAN0/view?usp=drive_link) |
 | [`cap1/`](cap1) | [`01 - SICSS-BAires - Embeddings.pdf`](<cap1/01 - SICSS-BAires - Embeddings.pdf>), [`01 - SICSS-BAires - Ilustracion Embeddings.ipynb`](<cap1/01 - SICSS-BAires - Ilustracion Embeddings.ipynb>) | Static word embeddings (word2vec) | [M1](https://docs.google.com/presentation/d/1AQ9mwtzUg23ePFU37xi0usMqIVRizvyefeBVp8fatEY/edit?usp=sharing) | [M1](https://colab.research.google.com/drive/1UUr5TWTf1DR-U_QGNyFxaYhtA9Vj06WP?usp=sharing) |
-| [`cap2/`](cap2) | [`02 -  SICSS - BAires - Transformers.pdf`](<cap2/02 -  SICSS - BAires - Transformers.pdf>) | Transformer architecture and self-attention | [M2](https://docs.google.com/presentation/d/1WW7WRTLpKdnNJDQY3j9FnNpOSMYSC27IQILWU98lOoA/edit?usp=sharing) | [M2](https://colab.research.google.com/drive/1bTeXc6RHtIQaOcD0v1C5YTE2VKTQ-hlI?usp=sharing) |
+| [`cap2/`](cap2) | [`02 -  SICSS - BAires - Transformers.pdf`](<cap2/02 -  SICSS - BAires - Transformers.pdf>), [`02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb`](<cap2/02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb>) | Transformer architecture and self-attention | [M2](https://docs.google.com/presentation/d/1WW7WRTLpKdnNJDQY3j9FnNpOSMYSC27IQILWU98lOoA/edit?usp=sharing) | [M2](https://colab.research.google.com/drive/1bTeXc6RHtIQaOcD0v1C5YTE2VKTQ-hlI?usp=sharing) |
 | [`cap3/`](cap3) | [`03 - SICSS-Baires - LLMs.pdf`](<cap3/03 - SICSS-Baires - LLMs.pdf>) | Large Language Models and prompt engineering | [M3](https://docs.google.com/presentation/d/1mtF_NDhC8dnK7CAWxcgTcdErfrcu2EPxe5JPe-L2yuE/edit?usp=sharing) | — |
 
 #### `cap0/` — Session 0: Detecting topics in a corpus (68 slides)
@@ -209,12 +219,22 @@ etc.) by computing cosine distance between each dimension's average vector.
 - [Slides (Google Slides)](https://docs.google.com/presentation/d/1AQ9mwtzUg23ePFU37xi0usMqIVRizvyefeBVp8fatEY/edit?usp=sharing)
 - [Notebook (Google Colab)](https://colab.research.google.com/drive/1UUr5TWTf1DR-U_QGNyFxaYhtA9Vj06WP?usp=sharing)
 
-#### `cap2/` — Session 2: Transformers (32 slides)
+#### `cap2/` — Session 2: Transformers (32 slides + notebook)
 
 From sequential models (RNNs) to Transformers: input/output embeddings,
 self-attention (Query/Key/Value vectors), multi-head attention, and positional
 encoding. Overview of GPT and BERT. Includes hands-on instructions using
 `pysentimiento` on a comments dataset.
+
+The notebook [`02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb`](<cap2/02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb>)
+uses `pysentimiento`'s Spanish hate-speech model (a fine-tuned RoBERTuito) to
+predict `HS` on the HatEval test split (`data/hateval_test_df.csv`), and
+compares the result against the classical representations (TF, TF-IDF,
+embeddings) from `cap0/`.
+
+- **Dependencies:** `pysentimiento`, `transformers`, `torch`, `pandas`,
+  `scikit-learn`, `matplotlib`, `seaborn`.
+- **Data:** `data/hateval_test_df.csv` (already tracked in this repo).
 
 - [Slides (Google Slides)](https://docs.google.com/presentation/d/1WW7WRTLpKdnNJDQY3j9FnNpOSMYSC27IQILWU98lOoA/edit?usp=sharing)
 - [Notebook (Google Colab)](https://colab.research.google.com/drive/1bTeXc6RHtIQaOcD0v1C5YTE2VKTQ-hlI?usp=sharing)
