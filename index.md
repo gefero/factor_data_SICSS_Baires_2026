@@ -37,7 +37,7 @@ Qué es NLP y el problema del dato no estructurado, un flujo de trabajo
 lematización), representación matemática de un texto (Document-Term Matrix,
 Bag of Words) y modelado de tópicos con Latent Dirichlet Allocation (LDA).
 - [Diapositivas](https://docs.google.com/presentation/d/1ZoOBD8BvoVZkAu_58hRxQe2xowutgVfrsGJo3tR4QeY/edit?usp=sharing)
-- [Notebook](https://drive.google.com/file/d/1CjMq7aKPH_P_mFDEtRlNgLUFpanNnzNQ/view?usp=sharing)
+- [Notebook - Práctica guiada](https://drive.google.com/file/d/1CjMq7aKPH_P_mFDEtRlNgLUFpanNnzNQ/view?usp=sharing)
 
 ## M1. Acercamiento a los word embeddings
 Semántica léxica y semántica vectorial, matrices de co-ocurrencia
@@ -45,14 +45,15 @@ palabra-contexto, similitud coseno, la intuición de word2vec (skip-gram,
 negative sampling) y aplicaciones en ciencias sociales (detección de
 estereotipos, trayectorias).
 - [Diapositivas](https://docs.google.com/presentation/d/1AQ9mwtzUg23ePFU37xi0usMqIVRizvyefeBVp8fatEY/edit?usp=sharing)
-- [Notebook](https://colab.research.google.com/drive/1UUr5TWTf1DR-U_QGNyFxaYhtA9Vj06WP?usp=sharing)
+- [Notebook - Práctica guiada](https://colab.research.google.com/drive/1UUr5TWTf1DR-U_QGNyFxaYhtA9Vj06WP?usp=sharing)
 
 ## M2. Transformers
 De los modelos secuenciales (RNN) a los Transformers: embeddings de
 entrada/salida, self-attention (Query/Key/Value), atención multicabezal y
 positional encoding. Reseña de GPT y BERT.
 - [Diapositivas](https://docs.google.com/presentation/d/1WW7WRTLpKdnNJDQY3j9FnNpOSMYSC27IQILWU98lOoA/edit?usp=sharing)
-- [Notebook](https://colab.research.google.com/drive/1bTeXc6RHtIQaOcD0v1C5YTE2VKTQ-hlI?usp=sharing)
+- [Notebook - Práctica guiada transformers](https://colab.research.google.com/drive/1bTeXc6RHtIQaOcD0v1C5YTE2VKTQ-hlI?usp=sharing)
+- [Notebook - Práctica guiada pysentimiento](https://drive.google.com/file/d/1ZY0OXzECcuvfYPBC6bFxyPByO9osRa6O/view?usp=sharing)
 
 ## M3. ¿Cómo interactuamos con un LLM?
 Evolución de los LLMs, para qué (no) conviene usarlos, sus riesgos
@@ -60,3 +61,4 @@ Evolución de los LLMs, para qué (no) conviene usarlos, sus riesgos
 prompt engineering: roles (`system`/`user`), x-shot learning y Chain of
 Thought (CoT).
 - [Diapositivas](https://docs.google.com/presentation/d/1mtF_NDhC8dnK7CAWxcgTcdErfrcu2EPxe5JPe-L2yuE/edit?usp=sharing)
+- [Notebook - Práctica guiada LLMs](https://drive.google.com/file/d/1cFBVP9pZveZORl1cqn6-t54jz2VJry0D/view?usp=sharing)
