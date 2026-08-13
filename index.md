@@ -31,11 +31,11 @@ El repositorio con todo el material (diapositivas, notebooks y datasets) está
 disponible en [GitHub](https://github.com/gefero/factor_data_tuto_NLP_SICSS).
 
 # Contenidos y materiales
-## M0. Detectando tópicos en un corpus
+## M0. Vecorizando un corpus
 Qué es NLP y el problema del dato no estructurado, un flujo de trabajo
 "típico" en NLP (limpieza de texto, stopwords, tokenización, stemming vs.
 lematización), representación matemática de un texto (Document-Term Matrix,
-Bag of Words) y modelado de tópicos con Latent Dirichlet Allocation (LDA).
+Bag of Words).
 - [Diapositivas](https://docs.google.com/presentation/d/1ZoOBD8BvoVZkAu_58hRxQe2xowutgVfrsGJo3tR4QeY/edit?usp=sharing)
 - [Notebook - Práctica guiada](https://drive.google.com/file/d/1CjMq7aKPH_P_mFDEtRlNgLUFpanNnzNQ/view?usp=sharing)
 
