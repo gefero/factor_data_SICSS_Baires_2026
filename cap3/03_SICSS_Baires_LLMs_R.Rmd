@@ -301,33 +301,63 @@ Texto:
 "
 ```
 
-Cargamos el *test set* de HatEval, nos quedamos con los tweets en español (el
-mismo subconjunto que usamos en la clase anterior para TF, TF-IDF y
-embeddings) y extraemos una muestra estratificada por `HS` para no agotar el
-límite diario de requests gratis de la API.
+Cargamos el *test set* de HatEval y nos quedamos con los tweets en español
+(el mismo subconjunto que usamos en la clase anterior para TF, TF-IDF y
+embeddings):
 
 ```{r cargar-datos}
 data_path <- here("data", "hateval_test_df.csv")
 hateval_test <- read_csv(data_path, show_col_types = FALSE) %>%
   filter(language == "es")
+```
 
-# Extraemos una muestra estratificada por HS (discurso de odio si/no) de ~50 tweets.
-# Nota: le pasamos al LLM el texto *crudo* del tweet, sin el preprocesamiento
-# (minúsculas, sin URLs/menciones/acentos) que usamos para TF-IDF y embeddings.
-# Es una diferencia real entre los dos enfoques que vale la pena tener en cuenta
-# a la hora de comparar resultados.
-set.seed(123)
+## Tercer paso, las respuestas del LLM
+
+El notebook original itera fila por fila sobre una muestra estratificada de
+~50 tweets (25 con `HS=1`, 25 con `HS=0`, para no agotar el límite diario de
+requests gratis de la API) y le hace una request a Gemini a cada uno. Como
+no todo el mundo va a tener a mano una API key propia al correr este
+notebook, seguimos el mismo camino que agregó la versión más reciente del
+notebook en Python: usamos por default las respuestas **ya generadas**,
+guardadas en `data/rtas_hateval_llm.csv`, y dejamos el código para generar
+respuestas frescas como una sección opcional (`eval=FALSE`) más abajo.
+
+```{r cargar-respuestas-generadas}
+# rtas_hateval_llm.csv tiene una columna sin nombre con el id del tweet
+# (el índice que dejó pandas al guardar el csv) y la respuesta cruda
+rtas_test_df <- read_csv(here("data", "rtas_hateval_llm.csv"), show_col_types = FALSE) %>%
+  rename(id = 1)
+
+# Reconstruimos test_sample a partir de los ids que efectivamente se
+# consultaron (no volvemos a muestrear nosotros: el generador de números
+# aleatorios de R y el de pandas no producen la misma secuencia aunque se
+# fije la "misma" semilla, así que un slice_sample(seed=123) en R muestrearía
+# tweets distintos a los que ya están en rtas_hateval_llm.csv)
 test_sample <- hateval_test %>%
-  group_by(HS) %>%
-  slice_sample(n = 25) %>%
-  ungroup() %>%
+  filter(id %in% rtas_test_df$id) %>%
   select(id, text, HS, target)
 
 glue("{nrow(test_sample)} tweets | HS=1 (odio): {sum(test_sample$HS == 1)}, HS=0: {sum(test_sample$HS == 0)}")
 test_sample
 ```
 
-## Tercer paso, hacemos las requests, llamamos al LLM
+### (Opcional) Generar respuestas propias
+
+Si tenés tu propia API key y preferís generar respuestas frescas en lugar de
+usar las guardadas en `rtas_hateval_llm.csv`, este es el código — no se
+ejecuta por defecto. Nota: le pasamos al LLM el texto *crudo* del tweet, sin
+el preprocesamiento (minúsculas, sin URLs/menciones/acentos) que usamos para
+TF-IDF y embeddings — una diferencia real entre los dos enfoques que vale la
+pena tener en cuenta a la hora de comparar resultados.
+
+```{r muestra-propia, eval=FALSE}
+set.seed(123)
+test_sample <- hateval_test %>%
+  group_by(HS) %>%
+  slice_sample(n = 25) %>%
+  ungroup() %>%
+  select(id, text, HS, target)
+```
 
 Vamos a iterar por cada una de las filas del dataset y para cada fila, vamos
 a hacer una request a la API de Gemini con dos inputs: el `prompt` que
@@ -379,8 +409,9 @@ Vamos paso a paso:
    con lo acumulado hasta el momento, para no perder el progreso si algo
    falla a mitad de camino.
 
-Construimos `rtas_test_df` a partir de la lista `rtas` que generamos en el
-loop anterior:
+Y construimos `rtas_test_df` a partir de la lista `rtas` que generamos en el
+loop anterior (reemplazando la versión cargada de `rtas_hateval_llm.csv` de
+más arriba):
 
 ```{r armar-rtas-df, eval=FALSE}
 rtas_test_df <- enframe(unlist(rtas), name = "id", value = "resp") %>%
@@ -448,7 +479,7 @@ espacios sobrantes al principio y al final.
 inmigrantes como grupo."`, `parse_expl()` devuelve `"El tweet insulta a los
 inmigrantes como grupo."`.
 
-```{r aplicar-parseo, eval=FALSE}
+```{r aplicar-parseo}
 rtas_test_df <- rtas_test_df %>%
   mutate(
     llm_expl = map_chr(resp, parse_expl),
@@ -477,7 +508,7 @@ normalize_label <- function(s) {
 }
 ```
 
-```{r aplicar-normalize, eval=FALSE}
+```{r aplicar-normalize}
 # Normalizamos las predicciones del LLM (mayúsculas/acentos pueden variar)
 rtas_test_df <- rtas_test_df %>%
   mutate(
@@ -533,7 +564,7 @@ evaluar_llm <- function(df_pred) {
 reutilizamos más abajo, igual que hicimos con `evaluar_predicciones()` en
 `cap2`.
 
-```{r ver-prompt, eval=FALSE}
+```{r ver-prompt}
 cat(prompt)
 ```
 
@@ -541,7 +572,7 @@ Como el LLM no está garantizado a respetar estrictamente las dos categorías
 del prompt (o puede fallar el parseo de la respuesta), conviene revisar qué
 valores devolvió antes de calcular las métricas finales:
 
-```{r fuera-de-esquema, eval=FALSE}
+```{r fuera-de-esquema}
 count(rtas_test_df, llm_label, sort = TRUE)
 
 fuera_de_esquema <- rtas_test_df %>% filter(!llm_label %in% c("Odio", "No odio"))
@@ -569,7 +600,7 @@ calcular el reporte final filtramos las filas fuera de esquema, para poder
 inspeccionarlas nosotros mismos en vez de que se conviertan en `NA`
 silenciosamente:
 
-```{r filtrar-esquema, eval=FALSE}
+```{r filtrar-esquema}
 # Filtramos el data frame para excluir las respuestas fuera de esquema
 filtered_rtas_test_df <- rtas_test_df %>% filter(llm_label %in% c("Odio", "No odio"))
 
@@ -579,7 +610,7 @@ eval_llm <- evaluar_llm(filtered_rtas_test_df)
 eval_llm$metrics
 ```
 
-```{r matriz-confusion, eval=FALSE}
+```{r matriz-confusion}
 autoplot(eval_llm$conf_mat, type = "heatmap") +
   scale_fill_gradient(low = "#fcfcfb", high = "#184f95") +
   labs(
@@ -593,7 +624,7 @@ mismas métricas sobre la clase positiva (`HS=1` / `"Odio"`) que usamos en
 `cap0` para comparar TF, TF-IDF y embeddings, así los números quedan
 directamente comparables entre notebooks:
 
-```{r metricas-clase-positiva, eval=FALSE}
+```{r metricas-clase-positiva}
 resultados_llm <- filtered_rtas_test_df %>%
   mutate(
     HS = factor(HS, levels = c(1, 0)),
@@ -604,17 +635,38 @@ resultados_llm <- filtered_rtas_test_df %>%
 resultados_llm
 ```
 
+Como referencia, esto es lo que da `resultados_llm` corriendo este notebook
+tal cual sobre las respuestas reales de `rtas_hateval_llm.csv` (50 tweets,
+0 fuera de esquema, TP=10, FP=1, FN=15, TN=24):
+
+| accuracy | precision | recall | f1 |
+|---|---|---|---|
+| 0.680 | 0.909 | 0.400 | 0.556 |
+
+(Calculado a mano con las fórmulas estándar sobre la matriz de confusión —
+equivalente a lo que devuelve `metricas_clasificacion()`/`yardstick` — para
+no depender de tener `tidymodels` instalado al verificar este notebook. Si
+generan sus propias respuestas en la sección opcional, sus números van a
+diferir: son solo 50 tweets, así que unos pocos casos alcanzan para mover
+las métricas bastante.)
+
 Al analizar la matriz de confusión y las métricas de arriba, conviene mirar
 dos cosas en particular:
 
 - **El balance entre precisión y recall para la clase `Odio`**, y cómo se
   compara con los resultados de TF, TF-IDF y embeddings de `cap0` (TF y
   TF-IDF empatan en F1 ≈ 0.665, por encima de embeddings ≈ 0.596 — ver
-  `cap0/00_SICSS_BAires_Vectorización_R.Rmd`).
-- **Qué tipo de error predomina**: si el LLM comete más falsos positivos
-  (predice `Odio` cuando en realidad era `No odio`) o más falsos negativos
-  (predice `No odio` cuando en realidad era `Odio`). Los exploramos con
-  ejemplos concretos en la siguiente sección.
+  `cap0/00_SICSS_BAires_Vectorización_R.Rmd`). Acá el patrón es
+  marcadamente distinto: Gemini es **muy preciso pero muy poco sensible**
+  (precision 0.91 vs. recall 0.40) — cuando dice `Odio` casi siempre acierta,
+  pero se le escapa el 60% del odio real. Es lo opuesto al perfil de TF-IDF
+  (que priorizaba recall). El análisis de errores de abajo explica por qué:
+  el modelo es demasiado conservador con la regla "debe ser contra el grupo,
+  no un individuo" del prompt.
+- **Qué tipo de error predomina**: acá hay muchos más falsos negativos (15)
+  que falsos positivos (1) — el LLM le "cree" al criterio de "ataque grupal"
+  del prompt de forma casi literal, y prefiere no marcar `Odio` ante la duda.
+  Lo exploramos con ejemplos concretos en la siguiente sección.
 
 # Análisis de errores
 
@@ -637,11 +689,12 @@ haberle pedido razonamiento paso a paso en el prompt.
 
 Veamos primero una muestra de 5 "falsos negativos":
 
-```{r falsos-negativos, eval=FALSE}
+```{r falsos-negativos}
 falsos_negativos <- filtered_rtas_test_df %>%
   filter(hs_label == "Odio", llm_label == "No odio")
 
 n_ejemplos <- min(5, nrow(falsos_negativos))
+set.seed(42)
 muestra_fn <- falsos_negativos %>% slice_sample(n = n_ejemplos)
 
 pwalk(muestra_fn, function(id, text, llm_expl, ...) {
@@ -649,11 +702,12 @@ pwalk(muestra_fn, function(id, text, llm_expl, ...) {
 })
 ```
 
-```{r falsos-positivos, eval=FALSE}
+```{r falsos-positivos}
 falsos_positivos <- filtered_rtas_test_df %>%
   filter(hs_label == "No odio", llm_label == "Odio")
 
 n_ejemplos <- min(5, nrow(falsos_positivos))
+set.seed(42)
 muestra_fp <- falsos_positivos %>% slice_sample(n = n_ejemplos)
 
 pwalk(muestra_fp, function(id, text, llm_expl, ...) {
@@ -664,28 +718,46 @@ pwalk(muestra_fp, function(id, text, llm_expl, ...) {
 Lo interesante de este análisis, comparado con el de `cap0` (TF/TF-IDF) y
 `cap2` (embeddings/RoBERTuito), es que acá tenemos algo más que "qué
 palabra dispara la predicción": tenemos el razonamiento explícito del
-modelo. Vale la pena leer las explicaciones buscando dos patrones típicos:
+modelo. Como estamos usando las respuestas ya guardadas en
+`rtas_hateval_llm.csv` (no una llamada nueva a la API cada vez que
+renderizamos el notebook), esta muestra de errores es **reproducible** —
+`muestra_fn`/`muestra_fp` van a mostrar siempre los mismos 5 falsos
+negativos y el mismo falso positivo (`set.seed(42)`, igual que
+`random_state=42` en el notebook original).
 
-- **Falsos negativos por regla mal calibrada.** Es común que el LLM aplique
-  de forma demasiado literal el criterio "debe estar dirigido al grupo, no
-  a un individuo" del prompt, y descarte como `No odio` insultos o
-  amenazas explícitamente misóginas o violentas solo porque el destinatario
-  es una persona puntual. Es un error sistemático de *recall*, no de
-  comprensión del lenguaje: el modelo suele identificar correctamente la
-  violencia o el insulto, pero lo descarta por una condición de "alcance
-  grupal" que interpreta de forma más restrictiva de lo que en realidad
-  pretende el criterio de etiquetado del dataset.
-- **Falsos positivos "gatillados por palabra clave".** El LLM puede
-  disparar `Odio` apoyándose casi exclusivamente en la presencia de un
-  término considerado ofensivo, sin ponderar que el tono del tweet es
-  ambiguo, admirativo o irónico — la misma fragilidad que vimos en los
-  modelos lineales (TF/TF-IDF), solo que acá resulta más llamativa porque
-  el LLM sí tiene, en principio, la capacidad de razonar sobre el contexto.
+**Falsos negativos: la regla del prompt aplicada demasiado literal.** En 4
+de los 5 casos (tweets 34201, 33306, 32690, 32621) el modelo aplica de
+forma literal el criterio "debe estar dirigido al grupo, no a un individuo"
+para descartar como `No odio` insultos o amenazas explícitamente misóginas
+o violentas ("pinta de puta" a Victoria Donda, "sudaca" + insulto a
+`@mercheli`, "tu eres puta", "puta vieja, te rajo el cuello") solo porque
+el destinatario es una persona puntual. Es un error sistemático de
+*recall*, no de comprensión del lenguaje: el modelo identifica
+correctamente la violencia o el insulto, pero lo descarta por una
+condición de "alcance grupal" interpretada de forma más restrictiva que el
+criterio real de etiquetado de HatEval (que sí suele considerar `HS=1`
+cuando el lenguaje agresivo se apoya en un rasgo protegido — género,
+origen — aunque el blanco sea una persona específica). El quinto caso
+(tweet 31292, sobre "monguers indocumentados") es distinto: el LLM razona
+que el ataque es a un grupo político, no a un colectivo protegido por la
+definición del prompt — un desacuerdo genuino con la etiqueta humana más
+que un error de razonamiento.
 
-Cuáles ejemplos concretos caen en cada categoría depende de la muestra y de
-la corrida (Gemini no es determinista entre llamadas), así que vale la pena
-mirar la propia salida de `muestra_fn`/`muestra_fp` en vez de asumir que se
-va a repetir exactamente el mismo patrón que en la corrida original.
+**El único falso positivo: "gatillado" por una palabra clave.** El tweet
+31287 ("@AS_AGabilondo la esencia sudaca, que hermoso") muestra el problema
+inverso: el modelo dispara `Odio` apoyándose casi exclusivamente en la
+presencia de un término considerado xenófobo ("sudaca"), sin ponderar que
+el tono del tweet ("qué hermoso") es ambiguo o incluso admirativo/irónico.
+Es la misma fragilidad "gatillada por palabra clave" que vimos en los
+modelos lineales (TF/TF-IDF) en `cap0`, solo que acá resulta más llamativa
+porque el LLM sí tiene, en principio, la capacidad de razonar sobre el
+contexto — y en este caso puntual no la usó a fondo.
+
+Si corren `list_gemini_models()`/generan sus propias respuestas en la
+sección opcional de más arriba en vez de usar `rtas_hateval_llm.csv`, tengan
+en cuenta que Gemini no es determinista entre llamadas: es esperable que
+vean patrones similares, pero no necesariamente los mismos tweets
+puntuales.
 
 # Actividad
 
