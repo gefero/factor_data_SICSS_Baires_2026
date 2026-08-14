@@ -43,7 +43,7 @@ Colab/Drive usadas en cada práctica.
 | [`cap0/`](cap0) | [`00 - SICSS-BAires - Topic Modeling.pdf`](<cap0/00 - SICSS-BAires - Topic Modeling.pdf>) | Introducción a NLP y modelado de tópicos (LDA) | [M0](https://docs.google.com/presentation/d/1ZoOBD8BvoVZkAu_58hRxQe2xowutgVfrsGJo3tR4QeY/edit?usp=sharing) | [M0](https://drive.google.com/file/d/1dpL7G5Cp5Zpi3Rkzp1MrTSYRG_VjCAN0/view?usp=drive_link) |
 | [`cap1/`](cap1) | [`01 - SICSS-BAires - Embeddings.pdf`](<cap1/01 - SICSS-BAires - Embeddings.pdf>), [`01 - SICSS-BAires - Ilustracion Embeddings.ipynb`](<cap1/01 - SICSS-BAires - Ilustracion Embeddings.ipynb>) | Word embeddings estáticos (word2vec) | [M1](https://docs.google.com/presentation/d/1AQ9mwtzUg23ePFU37xi0usMqIVRizvyefeBVp8fatEY/edit?usp=sharing) | [M1](https://colab.research.google.com/drive/1UUr5TWTf1DR-U_QGNyFxaYhtA9Vj06WP?usp=sharing) |
 | [`cap2/`](cap2) | [`02 -  SICSS - BAires - Transformers.pdf`](<cap2/02 -  SICSS - BAires - Transformers.pdf>), [`02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb`](<cap2/02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb>) | Arquitectura Transformer y self-attention | [M2](https://docs.google.com/presentation/d/1WW7WRTLpKdnNJDQY3j9FnNpOSMYSC27IQILWU98lOoA/edit?usp=sharing) | [M2](https://colab.research.google.com/drive/1bTeXc6RHtIQaOcD0v1C5YTE2VKTQ-hlI?usp=sharing) |
-| [`cap3/`](cap3) | [`03 - SICSS-Baires - LLMs.pdf`](<cap3/03 - SICSS-Baires - LLMs.pdf>) | Large Language Models y prompt engineering | [M3](https://docs.google.com/presentation/d/1mtF_NDhC8dnK7CAWxcgTcdErfrcu2EPxe5JPe-L2yuE/edit?usp=sharing) | — |
+| [`cap3/`](cap3) | [`03 - SICSS-Baires - LLMs.pdf`](<cap3/03 - SICSS-Baires - LLMs.pdf>) | Large Language Models y prompt engineering | [M3](https://docs.google.com/presentation/d/1mtF_NDhC8dnK7CAWxcgTcdErfrcu2EPxe5JPe-L2yuE/edit?usp=sharing) | [Acuerdo entre anotadores](cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb) |
 
 #### `cap0/` — Clase 0: Detectando tópicos en un corpus (68 slides)
 
@@ -107,6 +107,17 @@ con 6 ejercicios guiados para practicar con un LLM conversacional.
 
 - [Slides (Google Slides)](https://docs.google.com/presentation/d/1mtF_NDhC8dnK7CAWxcgTcdErfrcu2EPxe5JPe-L2yuE/edit?usp=sharing)
 
+La notebook [`03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb`](cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb)
+calcula métricas de acuerdo inter-anotador (acuerdo observado, kappa de Cohen,
+kappa de Fleiss, alfa de Krippendorff, PABAK) sobre `data/sicss-anotacion-unificado.json`,
+donde 10 codificadores anotaron el mismo conjunto de 74 tweets con el esquema
+de discurso de odio usado en `03_SICSS_Baires_LLMs_y_Anotación.ipynb`. Sirve
+como techo realista contra el que evaluar a un LLM anotador.
+
+- **Dependencias:** `pandas`, `numpy`, `scikit-learn`, `statsmodels`,
+  `matplotlib`, `seaborn`.
+- **Datos:** `data/sicss-anotacion-unificado.json`.
+
 ### Datos (`data/`)
 
 Dos corpus de tweets de la campaña electoral argentina 2023, comprimidos en `.zip`
@@ -122,6 +133,14 @@ Ambos archivos comparten esquema (25 columnas), entre ellas: `id_str`, `created`
 `text`, `tweet_proc` (texto preprocesado), `n_favorites`, `n_retweets`, `language`,
 `place_country`. Son datos públicos de Twitter/X recolectados con fines
 didácticos para las prácticas de los capítulos 0 a 2.
+
+`data/sicss-anotacion-unificado.json` contiene las anotaciones humanas del
+ejercicio de discurso de odio de `cap3/`: 740 registros = 10 codificadores
+(`coder_id`) × 74 tweets, con el esquema `HATEFUL`/`OFFENSIVE`/`CALLS` + 8
+categorías temáticas. Se genera con `data/unify_anotaciones.py` a partir de
+`data/sicss-anotacion-20260814T182433Z-1-001.zip` (10 JSON parciales, uno por
+codificador); el script desambigua los archivos con `annotator == "anonymous"`
+asignándoles un `coder_id` propio, ya que corresponden a personas distintas.
 
 ### Imágenes (`imgs/`)
 
@@ -186,7 +205,7 @@ practice.
 | [`cap0/`](cap0) | [`00 - SICSS-BAires - Topic Modeling.pdf`](<cap0/00 - SICSS-BAires - Topic Modeling.pdf>) | Intro to NLP and topic modeling (LDA) | [M0](https://docs.google.com/presentation/d/1ZoOBD8BvoVZkAu_58hRxQe2xowutgVfrsGJo3tR4QeY/edit?usp=sharing) | [M0](https://drive.google.com/file/d/1dpL7G5Cp5Zpi3Rkzp1MrTSYRG_VjCAN0/view?usp=drive_link) |
 | [`cap1/`](cap1) | [`01 - SICSS-BAires - Embeddings.pdf`](<cap1/01 - SICSS-BAires - Embeddings.pdf>), [`01 - SICSS-BAires - Ilustracion Embeddings.ipynb`](<cap1/01 - SICSS-BAires - Ilustracion Embeddings.ipynb>) | Static word embeddings (word2vec) | [M1](https://docs.google.com/presentation/d/1AQ9mwtzUg23ePFU37xi0usMqIVRizvyefeBVp8fatEY/edit?usp=sharing) | [M1](https://colab.research.google.com/drive/1UUr5TWTf1DR-U_QGNyFxaYhtA9Vj06WP?usp=sharing) |
 | [`cap2/`](cap2) | [`02 -  SICSS - BAires - Transformers.pdf`](<cap2/02 -  SICSS - BAires - Transformers.pdf>), [`02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb`](<cap2/02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb>) | Transformer architecture and self-attention | [M2](https://docs.google.com/presentation/d/1WW7WRTLpKdnNJDQY3j9FnNpOSMYSC27IQILWU98lOoA/edit?usp=sharing) | [M2](https://colab.research.google.com/drive/1bTeXc6RHtIQaOcD0v1C5YTE2VKTQ-hlI?usp=sharing) |
-| [`cap3/`](cap3) | [`03 - SICSS-Baires - LLMs.pdf`](<cap3/03 - SICSS-Baires - LLMs.pdf>) | Large Language Models and prompt engineering | [M3](https://docs.google.com/presentation/d/1mtF_NDhC8dnK7CAWxcgTcdErfrcu2EPxe5JPe-L2yuE/edit?usp=sharing) | — |
+| [`cap3/`](cap3) | [`03 - SICSS-Baires - LLMs.pdf`](<cap3/03 - SICSS-Baires - LLMs.pdf>) | Large Language Models and prompt engineering | [M3](https://docs.google.com/presentation/d/1mtF_NDhC8dnK7CAWxcgTcdErfrcu2EPxe5JPe-L2yuE/edit?usp=sharing) | [Annotator agreement](cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb) |
 
 #### `cap0/` — Session 0: Detecting topics in a corpus (68 slides)
 
@@ -249,6 +268,18 @@ prompting, with 6 guided exercises to practice with a conversational LLM.
 
 - [Slides (Google Slides)](https://docs.google.com/presentation/d/1mtF_NDhC8dnK7CAWxcgTcdErfrcu2EPxe5JPe-L2yuE/edit?usp=sharing)
 
+The notebook [`03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb`](cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb)
+computes inter-annotator agreement metrics (observed agreement, Cohen's kappa,
+Fleiss' kappa, Krippendorff's alpha, PABAK) on
+`data/sicss-anotacion-unificado.json`, where 10 coders annotated the same set
+of 74 tweets with the hate-speech schema used in
+`03_SICSS_Baires_LLMs_y_Anotación.ipynb`. It serves as a realistic ceiling to
+evaluate an LLM annotator against.
+
+- **Dependencies:** `pandas`, `numpy`, `scikit-learn`, `statsmodels`,
+  `matplotlib`, `seaborn`.
+- **Data:** `data/sicss-anotacion-unificado.json`.
+
 ### Data (`data/`)
 
 Two tweet corpora from the 2023 Argentine electoral campaign, compressed as
@@ -265,6 +296,15 @@ Both files share the same schema (25 columns), including: `id_str`, `created`,
 `text`, `tweet_proc` (preprocessed text), `n_favorites`, `n_retweets`,
 `language`, `place_country`. This is public Twitter/X data collected for
 teaching purposes, used in the hands-on exercises of chapters 0 through 2.
+
+`data/sicss-anotacion-unificado.json` holds the human annotations for the
+`cap3/` hate-speech exercise: 740 records = 10 coders (`coder_id`) × 74
+tweets, with the `HATEFUL`/`OFFENSIVE`/`CALLS` schema plus 8 topical
+categories. It is generated by `data/unify_anotaciones.py` from
+`data/sicss-anotacion-20260814T182433Z-1-001.zip` (10 partial JSON files, one
+per coder); the script disambiguates the files with `annotator == "anonymous"`
+by assigning each one its own `coder_id`, since they correspond to different
+people.
 
 ### Images (`imgs/`)
 

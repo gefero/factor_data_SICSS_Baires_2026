@@ -65,4 +65,5 @@ Thought (CoT). Usos posibles de los LLMs: clasificación, anotación. Sesgos y e
 - [Diapositivas - Intro LLMS](https://docs.google.com/presentation/d/1tkrYcqOefaGM8_ZAYeVC4hf7tlV92TYa8uEpgysgCvU/edit?usp=sharing)
 - [Notebook - Práctica guiada - LLMs y anotación](https://colab.research.google.com/drive/1RdQxYVqEIFTEHohsq1zVbmB9tML05iUz?usp=sharing)
 - [Diapositivas - LLMs y anotación](https://docs.google.com/presentation/d/1sDPwu6nCDt8CGr5jmqxcMTUcNvjjdfaMqDAj19RLjck/edit?usp=sharing)
+- [Notebook - Acuerdo entre anotadores](https://github.com/gefero/factor_data_tuto_NLP_SICSS/blob/main/cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb)
 - [Notebook - Práctica guiada - LLMs y sesgos](https://colab.research.google.com/drive/15v5kDWl8dQJY9pL1kMZk4zHxz1yK2C2n?usp=sharing)
