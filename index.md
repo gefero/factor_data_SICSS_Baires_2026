@@ -55,10 +55,14 @@ positional encoding. Reseña de GPT y BERT.
 - [Notebook - Práctica guiada transformers](https://colab.research.google.com/drive/1bTeXc6RHtIQaOcD0v1C5YTE2VKTQ-hlI?usp=sharing)
 - [Notebook - Práctica guiada pysentimiento](https://drive.google.com/file/d/1ZY0OXzECcuvfYPBC6bFxyPByO9osRa6O/view?usp=sharing)
 
-## M3. ¿Cómo interactuamos con un LLM?
+## M3. ¿Cómo interactuamos con un LLM? ¿Cómo usamos un LLM? ¿Qué problemas surgen con los LLMs?
 Evolución de los LLMs, para qué (no) conviene usarlos, sus riesgos
 (alucinaciones, sesgos) y transfer learning/fine-tuning. Guía práctica de
 prompt engineering: roles (`system`/`user`), x-shot learning y Chain of
-Thought (CoT).
-- [Diapositivas](https://docs.google.com/presentation/d/1mtF_NDhC8dnK7CAWxcgTcdErfrcu2EPxe5JPe-L2yuE/edit?usp=sharing)
-- [Notebook - Práctica guiada LLMs](https://drive.google.com/file/d/1cFBVP9pZveZORl1cqn6-t54jz2VJry0D/view?usp=sharing)
+Thought (CoT). Usos posibles de los LLMs: clasificación, anotación. Sesgos y estereotipos en LLMs.
+- [Diapositivas - Intro LLMS](https://docs.google.com/presentation/d/1mtF_NDhC8dnK7CAWxcgTcdErfrcu2EPxe5JPe-L2yuE/edit?usp=sharing)
+- [Notebook - Práctica guiada Intro LLMs](https://drive.google.com/file/d/1cFBVP9pZveZORl1cqn6-t54jz2VJry0D/view?usp=sharing)
+- [Diapositivas - Intro LLMS](https://docs.google.com/presentation/d/1tkrYcqOefaGM8_ZAYeVC4hf7tlV92TYa8uEpgysgCvU/edit?usp=sharing)
+- [Notebook - Práctica guiada - LLMs y anotación](https://colab.research.google.com/drive/1RdQxYVqEIFTEHohsq1zVbmB9tML05iUz?usp=sharing)
+- [Diapositivas - LLMs y anotación](https://docs.google.com/presentation/d/1sDPwu6nCDt8CGr5jmqxcMTUcNvjjdfaMqDAj19RLjck/edit?usp=sharing)
+- [Notebook - Práctica guiada - LLMs y sesgos](https://colab.research.google.com/drive/15v5kDWl8dQJY9pL1kMZk4zHxz1yK2C2n?usp=sharing)
