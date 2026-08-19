@@ -25,6 +25,7 @@ de tweets para las prácticas hands-on.
 ├── cap1/   # Clase 1 (M1): Word embeddings
 ├── cap2/   # Clase 2 (M2): Transformers
 ├── cap3/   # Clase 3 (M3): LLMs y prompt engineering
+├── consigna_desafio/   # Desafío integrador: índice de polarización
 ├── data/   # Datasets de tweets para las prácticas
 ├── imgs/   # Logos e imágenes institucionales
 ├── LICENSE
@@ -44,6 +45,7 @@ Colab/Drive usadas en cada práctica.
 | [`cap1/`](cap1) | [`01 - SICSS-BAires - Embeddings.pdf`](<cap1/01 - SICSS-BAires - Embeddings.pdf>), [`01 - SICSS-BAires - Ilustracion Embeddings.ipynb`](<cap1/01 - SICSS-BAires - Ilustracion Embeddings.ipynb>) | Word embeddings estáticos (word2vec) | [M1](https://docs.google.com/presentation/d/1AQ9mwtzUg23ePFU37xi0usMqIVRizvyefeBVp8fatEY/edit?usp=sharing) | [M1](https://colab.research.google.com/drive/1UUr5TWTf1DR-U_QGNyFxaYhtA9Vj06WP?usp=sharing) |
 | [`cap2/`](cap2) | [`02 -  SICSS - BAires - Transformers.pdf`](<cap2/02 -  SICSS - BAires - Transformers.pdf>), [`02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb`](<cap2/02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb>) | Arquitectura Transformer y self-attention | [M2](https://docs.google.com/presentation/d/1WW7WRTLpKdnNJDQY3j9FnNpOSMYSC27IQILWU98lOoA/edit?usp=sharing) | [M2](https://colab.research.google.com/drive/1bTeXc6RHtIQaOcD0v1C5YTE2VKTQ-hlI?usp=sharing) |
 | [`cap3/`](cap3) | [`03 - SICSS-Baires - LLMs.pdf`](<cap3/03 - SICSS-Baires - LLMs.pdf>) | Large Language Models y prompt engineering | [M3](https://docs.google.com/presentation/d/1mtF_NDhC8dnK7CAWxcgTcdErfrcu2EPxe5JPe-L2yuE/edit?usp=sharing) | [Acuerdo entre anotadores](cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb) |
+| [`consigna_desafio/`](consigna_desafio) | [`SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb`](consigna_desafio/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb) | Desafío integrador: índice de polarización en comentarios de noticias | — | [Desafío](consigna_desafio/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb) |
 
 #### `cap0/` — Clase 0: Detectando tópicos en un corpus (68 slides)
 
@@ -118,6 +120,33 @@ como techo realista contra el que evaluar a un LLM anotador.
   `matplotlib`, `seaborn`.
 - **Datos:** `data/sicss-anotacion-unificado.json`.
 
+#### `consigna_desafio/` — Desafío integrador: polarización
+
+La notebook [`SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb`](consigna_desafio/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb)
+cierra el taller con una consigna que usa lo visto para responder una pregunta
+sustantiva en vez de enseñar una técnica: **¿qué noticias polarizan la conversación
+de sus lectores?**
+
+Clasifica comentarios de lectores del dataset
+[`finiteautomata/news-argentina`](https://huggingface.co/datasets/finiteautomata/news-argentina)
+con `pysentimiento` —las tareas `sentiment` y `emotion`, no `hate_speech` como en
+`cap2/`— y **agrega** esas clasificaciones en un índice de polarización por noticia
+de tres dimensiones: disenso de valencia (ratio positivos/negativos), violencia
+emocional (ratio `anger`+`disgust` sobre el resto) y bimodalidad (dispersión
+normalizada del score de sentimiento). Incluye Esteban-Ray (1994) como control de
+robustez, bootstrap para justificar el mínimo de comentarios por noticia, y una
+ponderación alternativa por componentes principales.
+
+El punto pedagógico es el salto de unidad de análisis: en `cap2/` la unidad era el
+texto y la pregunta era si el modelo acertaba; acá la clasificación es un insumo y lo
+que se mide es una propiedad del colectivo.
+
+- **Dependencias:** `pysentimiento`, `datasets`, `pandas`, `numpy`, `scikit-learn`,
+  `matplotlib`, `seaborn`, `tqdm`.
+- **Datos:** se descargan de HuggingFace; nada en `data/`.
+- **Requiere GPU** (Colab). El costo se controla con `N_NOTICIAS`.
+- Ver [`consigna_desafio/README.md`](consigna_desafio/README.md) para el detalle.
+
 ### Datos (`data/`)
 
 Dos corpus de tweets de la campaña electoral argentina 2023, comprimidos en `.zip`
@@ -187,6 +216,7 @@ Este repositorio se distribuye bajo licencia [MIT](LICENSE).
 ├── cap1/   # Session 1 (M1): Word embeddings
 ├── cap2/   # Session 2 (M2): Transformers
 ├── cap3/   # Session 3 (M3): LLMs and prompt engineering
+├── consigna_desafio/   # Capstone challenge: polarization index
 ├── data/   # Tweet datasets for the hands-on exercises
 ├── imgs/   # Institutional logos and images
 ├── LICENSE
@@ -206,6 +236,7 @@ practice.
 | [`cap1/`](cap1) | [`01 - SICSS-BAires - Embeddings.pdf`](<cap1/01 - SICSS-BAires - Embeddings.pdf>), [`01 - SICSS-BAires - Ilustracion Embeddings.ipynb`](<cap1/01 - SICSS-BAires - Ilustracion Embeddings.ipynb>) | Static word embeddings (word2vec) | [M1](https://docs.google.com/presentation/d/1AQ9mwtzUg23ePFU37xi0usMqIVRizvyefeBVp8fatEY/edit?usp=sharing) | [M1](https://colab.research.google.com/drive/1UUr5TWTf1DR-U_QGNyFxaYhtA9Vj06WP?usp=sharing) |
 | [`cap2/`](cap2) | [`02 -  SICSS - BAires - Transformers.pdf`](<cap2/02 -  SICSS - BAires - Transformers.pdf>), [`02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb`](<cap2/02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb>) | Transformer architecture and self-attention | [M2](https://docs.google.com/presentation/d/1WW7WRTLpKdnNJDQY3j9FnNpOSMYSC27IQILWU98lOoA/edit?usp=sharing) | [M2](https://colab.research.google.com/drive/1bTeXc6RHtIQaOcD0v1C5YTE2VKTQ-hlI?usp=sharing) |
 | [`cap3/`](cap3) | [`03 - SICSS-Baires - LLMs.pdf`](<cap3/03 - SICSS-Baires - LLMs.pdf>) | Large Language Models and prompt engineering | [M3](https://docs.google.com/presentation/d/1mtF_NDhC8dnK7CAWxcgTcdErfrcu2EPxe5JPe-L2yuE/edit?usp=sharing) | [Annotator agreement](cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb) |
+| [`consigna_desafio/`](consigna_desafio) | [`SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb`](consigna_desafio/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb) | Capstone challenge: a polarization index over news comments | — | [Challenge](consigna_desafio/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb) |
 
 #### `cap0/` — Session 0: Detecting topics in a corpus (68 slides)
 
@@ -279,6 +310,33 @@ evaluate an LLM annotator against.
 - **Dependencies:** `pandas`, `numpy`, `scikit-learn`, `statsmodels`,
   `matplotlib`, `seaborn`.
 - **Data:** `data/sicss-anotacion-unificado.json`.
+
+#### `consigna_desafio/` — Capstone challenge: polarization
+
+The notebook [`SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb`](consigna_desafio/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb)
+closes the workshop with an assignment that uses what was covered to answer a
+substantive question rather than to teach a technique: **which news stories polarize
+their readers' conversation?**
+
+It classifies reader comments from the
+[`finiteautomata/news-argentina`](https://huggingface.co/datasets/finiteautomata/news-argentina)
+dataset with `pysentimiento` — the `sentiment` and `emotion` tasks, not `hate_speech`
+as in `cap2/` — and **aggregates** those classifications into a three-dimensional
+per-article polarization index: valence dissent (positive/negative ratio), emotional
+violence (`anger`+`disgust` over the rest) and bimodality (normalized dispersion of
+the sentiment score). It includes Esteban-Ray (1994) as a robustness check, a
+bootstrap justifying the minimum comments per article, and an alternative weighting
+from principal components.
+
+The pedagogical point is the shift in unit of analysis: in `cap2/` the unit was the
+text and the question was whether the model was right; here classification is an input
+and what gets measured is a property of the collective.
+
+- **Dependencies:** `pysentimiento`, `datasets`, `pandas`, `numpy`, `scikit-learn`,
+  `matplotlib`, `seaborn`, `tqdm`.
+- **Data:** downloaded from HuggingFace; nothing in `data/`.
+- **Requires a GPU** (Colab). Cost is controlled by `N_NOTICIAS`.
+- See [`consigna_desafio/README.md`](consigna_desafio/README.md) for details.
 
 ### Data (`data/`)
 

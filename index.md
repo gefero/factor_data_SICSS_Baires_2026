@@ -67,3 +67,14 @@ Thought (CoT). Usos posibles de los LLMs: clasificación, anotación. Sesgos y e
 - [Diapositivas - LLMs y anotación](https://docs.google.com/presentation/d/1sDPwu6nCDt8CGr5jmqxcMTUcNvjjdfaMqDAj19RLjck/edit?usp=sharing)
 - [Notebook - Acuerdo entre anotadores](https://github.com/gefero/factor_data_tuto_NLP_SICSS/blob/main/cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb)
 - [Notebook - Práctica guiada - LLMs y sesgos](https://colab.research.google.com/drive/15v5kDWl8dQJY9pL1kMZk4zHxz1yK2C2n?usp=sharing)
+
+## Desafío integrador. Un índice de polarización en comentarios de noticias
+Consigna que integra lo visto en los módulos anteriores para responder una pregunta
+sustantiva: ¿qué noticias polarizan la conversación de sus lectores? Se clasifican
+comentarios de lectores de medios argentinos con `pysentimiento` (sentimiento y
+emoción) y se **agregan** esas clasificaciones en un índice por noticia de tres
+dimensiones: disenso de valencia, violencia emocional y bimodalidad. El eje del
+ejercicio es el salto de unidad de análisis —del texto individual a la conversación—
+y las decisiones metodológicas que ese salto obliga a tomar.
+- [Notebook - Desafío](https://github.com/gefero/factor_data_tuto_NLP_SICSS/blob/main/consigna_desafio/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb)
+- [Consigna y detalle](https://github.com/gefero/factor_data_tuto_NLP_SICSS/blob/main/consigna_desafio/README.md)
