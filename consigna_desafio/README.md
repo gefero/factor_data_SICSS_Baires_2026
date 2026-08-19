@@ -1,4 +1,4 @@
-# Desafío: índice de polarización en comentarios de noticias
+# Trabajo final: índice de polarización en comentarios de noticias
 
 **[Español](#español) · [English](#english)**
 
@@ -6,126 +6,114 @@
 
 ## Español
 
-Consigna integradora del taller. A diferencia de las notebooks de `cap0/`–`cap3/`,
-que enseñan una técnica por vez, acá se usa lo visto para responder una pregunta
-sustantiva: **¿qué noticias polarizan la conversación de sus lectores?**
+Consigna integradora del taller. A diferencia de las notebooks de `cap0/`–`cap3/`, que
+enseñan una técnica por vez, acá se usa lo visto para responder una pregunta sustantiva:
+**¿qué noticias polarizan la conversación de sus lectores?**
 
-### La notebook
+### Empezar por acá
 
-[`SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb`](SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb)
+| Archivo | Qué es |
+|---|---|
+| [`CONSIGNA.md`](CONSIGNA.md) | **El enunciado del trabajo final.** Empezá por acá |
+| [`SICSS_BAires_TP_Final_Esqueleto.ipynb`](SICSS_BAires_TP_Final_Esqueleto.ipynb) | Esqueleto de notebook con las secciones vacías, para ordenarse |
 
-Toma el dataset [`finiteautomata/news-argentina`](https://huggingface.co/datasets/finiteautomata/news-argentina)
-(comentarios de lectores a noticias de medios argentinos), clasifica cada comentario
-con [`pysentimiento`](https://github.com/pysentimiento/pysentimiento) —las tareas
-`sentiment` y `emotion`, no `hate_speech` como en `cap2/`— y **agrega** esas
-clasificaciones en un índice por noticia.
+El trabajo pide construir un índice de polarización **a nivel noticia** a partir de los
+comentarios que cada noticia recibió, clasificados con
+[`pysentimiento`](https://github.com/pysentimiento/pysentimiento). Se resuelve en unas
+6 horas, en grupos de 3 o 4, y se entrega como una presentación breve.
 
-El punto pedagógico es el salto de unidad de análisis: en `cap2/` la unidad era el
-texto y la pregunta era si el modelo acertaba; acá la clasificación es un insumo y
-lo que se mide es una propiedad del colectivo. Un comentario no es polarizado; una
-conversación sí.
+La consigna deliberadamente **no dice cómo operacionalizar la polarización**: da
+requisitos y casos de prueba que el índice tiene que saber distinguir, y la estrategia
+metodológica la deciden los grupos.
 
-### El índice
+El punto pedagógico es el salto de unidad de análisis: en `cap2/` la unidad era el texto
+y la pregunta era si el modelo acertaba; acá la clasificación es un insumo y lo que se
+mide es una propiedad del colectivo. Un comentario no es polarizado; una conversación sí.
 
-| Dimensión | Fórmula | Qué mide |
-|---|---|---|
-| **D1** — disenso de valencia | $1 - \|(n_{pos} - n_{neg}) / (n_{pos} + n_{neg})\|$ | Cuán dividida está la sección entre positivos y negativos |
-| **D2** — violencia emocional | $n_{viol} / (n_{viol} + n_{noviol})$ | Qué proporción de la emoción marcada es hostil (`anger`, `disgust`) |
-| **D3** — bimodalidad | $\mathrm{Var}(s) / (1 - \bar{s}^2)$ | Cuánto se concentra la opinión en los extremos en vez del centro |
+### Datos
 
-con $s = P(\text{POS}) - P(\text{NEG})$ por comentario. El índice compuesto es el
-promedio simple de las tres, y la notebook discute explícitamente que esa ponderación
-es una decisión (la compara contra una derivada por componentes principales).
-
-D3 es la que hace el trabajo conceptual: sin ella, una noticia donde todos putean al
-mismo actor —negativa y unánime— quedaría marcada como polarizada. Sentimiento
-negativo no es polarización.
-
-Como control de robustez se calcula también el índice de **Esteban-Ray** (1994) sobre
-las tres clases discretas, y se comparan los dos ordenamientos.
-
-### Cómo correrla
-
-Abrila en **Google Colab con GPU** (`Entorno de ejecución > Cambiar tipo de entorno de
-ejecución > GPU`). Sin GPU la predicción sobre varios miles de comentarios pasa de un
-par de minutos a bastante más de media hora.
-
-El costo lo controla `N_NOTICIAS`, en la celda de parámetros al principio (200 por
-defecto). Si vas a correrla en CPU, bajalo a 30 o 40.
+[`finiteautomata/news-argentina`](https://huggingface.co/datasets/finiteautomata/news-argentina),
+comentarios de lectores a noticias de medios argentinos. Se descarga desde la notebook;
+no hay nada en `data/`.
 
 - **Dependencias:** `pysentimiento`, `datasets`, `pandas`, `numpy`, `scikit-learn`,
-  `matplotlib`, `seaborn`, `tqdm`. La notebook las instala sola en la primera celda.
-- **Datos:** se bajan de HuggingFace, no hay nada en `data/`.
+  `matplotlib`, `seaborn`, `tqdm`.
+- **Requiere GPU** (Colab). Sin GPU, la inferencia sobre varios miles de comentarios pasa
+  de un par de minutos a bastante más de media hora.
 
-### Nota sobre el dataset
+---
 
-La notebook detecta los nombres de columna automáticamente (diccionario `COLS`), así
-que tolera cambios de esquema y se puede apuntar a otro corpus de comentarios tocando
-una sola celda. Si `finiteautomata/news-argentina` no tuviera la estructura
-noticia → comentarios que el índice necesita, el reemplazo directo es
-[`piuba-bigdata/contextualized_hate_speech`](https://huggingface.co/datasets/piuba-bigdata/contextualized_hate_speech),
-del mismo autor.
+### Solución de referencia
+
+> **Spoiler.** [`SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb`](SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb)
+> es **una solución posible** del trabajo, comentada en detalle. Si vas a resolver la
+> consigna, no la abras hasta tener tu propio índice andando: la parte que se aprende es
+> equivocarse contra los casos de prueba, y eso no se puede leer.
+
+Construye un índice de tres dimensiones —disenso de valencia, violencia emocional y
+bimodalidad del sentimiento—, incluye el índice de Esteban-Ray (1994) como control de
+robustez, un bootstrap que justifica el mínimo de comentarios por noticia, y una
+ponderación alternativa por componentes principales. Detecta los nombres de columna del
+dataset automáticamente, así que tolera cambios de esquema y se puede apuntar a otro
+corpus de comentarios tocando una sola celda.
+
+No es "la" respuesta: es una entre varias defendibles. La comparación entre el índice
+propio y este es un buen cierre del trabajo.
 
 ---
 
 ## English
 
-Capstone assignment for the workshop. Unlike the `cap0/`–`cap3/` notebooks, which
-each teach one technique, this one uses them to answer a substantive question:
-**which news stories polarize their readers' conversation?**
+Capstone assignment for the workshop. Unlike the `cap0/`–`cap3/` notebooks, which each
+teach one technique, this one uses them to answer a substantive question: **which news
+stories polarize their readers' conversation?**
 
-### The notebook
+### Start here
 
-[`SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb`](SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb)
+| File | What it is |
+|---|---|
+| [`CONSIGNA.md`](CONSIGNA.md) | **The assignment brief** (in Spanish). Start here |
+| [`SICSS_BAires_TP_Final_Esqueleto.ipynb`](SICSS_BAires_TP_Final_Esqueleto.ipynb) | Skeleton notebook with empty sections, to get organized |
 
-It takes the [`finiteautomata/news-argentina`](https://huggingface.co/datasets/finiteautomata/news-argentina)
-dataset (reader comments on Argentine news outlets), classifies each comment with
-[`pysentimiento`](https://github.com/pysentimiento/pysentimiento) — the `sentiment`
-and `emotion` tasks, not `hate_speech` as in `cap2/` — and **aggregates** those
-classifications into a per-article index.
+The assignment asks for a polarization index **at the article level**, built from the
+comments each article received, classified with
+[`pysentimiento`](https://github.com/pysentimiento/pysentimiento). It takes about
+6 hours, in groups of 3 or 4, and is handed in as a short presentation.
 
-The pedagogical point is the shift in unit of analysis: in `cap2/` the unit was the
-text and the question was whether the model was right; here classification is an
-input, and what gets measured is a property of the collective. A single comment is
-not polarized; a conversation is.
+The brief deliberately **does not say how to operationalize polarization**: it gives
+requirements and test cases the index must tell apart, and each group decides the
+methodological strategy.
 
-### The index
+The pedagogical point is the shift in unit of analysis: in `cap2/` the unit was the text
+and the question was whether the model was right; here classification is an input, and
+what gets measured is a property of the collective. A single comment is not polarized;
+a conversation is.
 
-| Dimension | Formula | What it measures |
-|---|---|---|
-| **D1** — valence dissent | $1 - \|(n_{pos} - n_{neg}) / (n_{pos} + n_{neg})\|$ | How split the comment section is between positive and negative |
-| **D2** — emotional violence | $n_{viol} / (n_{viol} + n_{nonviol})$ | What share of marked emotion is hostile (`anger`, `disgust`) |
-| **D3** — bimodality | $\mathrm{Var}(s) / (1 - \bar{s}^2)$ | How much opinion clusters at the extremes rather than the centre |
+### Data
 
-with $s = P(\text{POS}) - P(\text{NEG})$ per comment. The composite index is their
-simple average, and the notebook makes explicit that this weighting is a decision
-(comparing it against one derived from principal components).
-
-D3 does the conceptual work: without it, an article where everyone piles on the same
-target — negative and unanimous — would be flagged as polarized. Negative sentiment
-is not polarization.
-
-As a robustness check the **Esteban-Ray** (1994) index is also computed over the three
-discrete classes, and the two rankings are compared.
-
-### How to run it
-
-Open it in **Google Colab with GPU** (`Runtime > Change runtime type > GPU`). Without
-a GPU, predicting over several thousand comments goes from a couple of minutes to well
-over half an hour.
-
-Cost is controlled by `N_NOTICIAS` in the parameters cell at the top (200 by default).
-Drop it to 30 or 40 if you are running on CPU.
+[`finiteautomata/news-argentina`](https://huggingface.co/datasets/finiteautomata/news-argentina),
+reader comments on Argentine news outlets. Downloaded from the notebook; nothing is
+stored in `data/`.
 
 - **Dependencies:** `pysentimiento`, `datasets`, `pandas`, `numpy`, `scikit-learn`,
-  `matplotlib`, `seaborn`, `tqdm`. The notebook installs them in its first cell.
-- **Data:** downloaded from HuggingFace; nothing is stored in `data/`.
+  `matplotlib`, `seaborn`, `tqdm`.
+- **Requires a GPU** (Colab). Without one, predicting over several thousand comments goes
+  from a couple of minutes to well over half an hour.
 
-### Note on the dataset
+---
 
-The notebook auto-detects column names (the `COLS` dictionary), so it tolerates schema
-changes and can be pointed at another comment corpus by editing a single cell. Should
-`finiteautomata/news-argentina` not have the article → comments structure the index
-needs, the drop-in replacement is
-[`piuba-bigdata/contextualized_hate_speech`](https://huggingface.co/datasets/piuba-bigdata/contextualized_hate_speech),
-by the same author.
+### Reference solution
+
+> **Spoiler.** [`SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb`](SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb)
+> is **one possible solution**, commented in detail. If you are going to work through the
+> assignment, do not open it until your own index runs: the part you learn from is
+> getting the test cases wrong, and that cannot be read.
+
+It builds a three-dimensional index — valence dissent, emotional violence and sentiment
+bimodality — includes the Esteban-Ray (1994) index as a robustness check, a bootstrap
+justifying the minimum comments per article, and an alternative weighting from principal
+components. It auto-detects the dataset's column names, so it tolerates schema changes
+and can be pointed at another comment corpus by editing a single cell.
+
+It is not "the" answer: it is one among several defensible ones. Comparing your own index
+against it makes for a good closing section.
