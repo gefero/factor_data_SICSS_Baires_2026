@@ -68,15 +68,28 @@ Thought (CoT). Usos posibles de los LLMs: clasificación, anotación. Sesgos y e
 - [Notebook - Acuerdo entre anotadores](https://github.com/gefero/factor_data_tuto_NLP_SICSS/blob/main/cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb)
 - [Notebook - Práctica guiada - LLMs y sesgos](https://colab.research.google.com/drive/15v5kDWl8dQJY9pL1kMZk4zHxz1yK2C2n?usp=sharing)
 
-## Trabajo final. Un índice de polarización en comentarios de noticias
+## Trabajo final
 Trabajo que integra lo visto en los módulos anteriores para responder una pregunta
-sustantiva: ¿qué noticias polarizan la conversación de sus lectores? Hay que construir
-un índice de polarización a nivel noticia a partir de los comentarios que cada una
-recibió, clasificados con `pysentimiento`. El eje del ejercicio es el salto de unidad de
-análisis —del texto individual a la conversación— y las decisiones metodológicas que ese
-salto obliga a tomar: la consigna no dice cómo operacionalizar la polarización, sino que
-da requisitos y casos de prueba que el índice tiene que saber distinguir. Se resuelve en
-unas 6 horas, en grupos de 3 o 4, y se entrega como una presentación breve.
-- [Consigna](https://github.com/gefero/factor_data_tuto_NLP_SICSS/blob/main/consigna_desafio/CONSIGNA.md)
-- [Esqueleto de notebook](https://github.com/gefero/factor_data_tuto_NLP_SICSS/blob/main/consigna_desafio/SICSS_BAires_TP_Final_Esqueleto.ipynb)
-- [Solución de referencia](https://github.com/gefero/factor_data_tuto_NLP_SICSS/blob/main/consigna_desafio/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb) (spoiler: no abrirla antes de resolver)
+sustantiva sobre polarización. Hay **dos consignas a elección**; cada grupo elige una. Se
+resuelve en unas 6 horas y se entrega como una presentación de unos 10 minutos que reseñe
+las decisiones metodológicas y los principales resultados, con la notebook del análisis
+como respaldo.
+
+### Opción A. Un índice de polarización en comentarios de noticias
+Hay que construir un índice de polarización a nivel noticia a partir de los comentarios
+que cada una recibió, clasificados con `pysentimiento`. El eje del ejercicio es el salto
+de unidad de análisis —del texto individual a la conversación— y las decisiones
+metodológicas que ese salto obliga a tomar: la consigna no dice cómo operacionalizar la
+polarización, sino que plantea las preguntas que el trabajo tiene que contestar.
+- [Consigna](https://github.com/gefero/factor_data_tuto_NLP_SICSS/blob/main/consigna_desafio/clasificacion/CONSIGNA.md)
+- [Esqueleto de notebook](https://github.com/gefero/factor_data_tuto_NLP_SICSS/blob/main/consigna_desafio/clasificacion/SICSS_BAires_TP_Final_Esqueleto.ipynb)
+- [Solución de referencia](https://github.com/gefero/factor_data_tuto_NLP_SICSS/blob/main/consigna_desafio/clasificacion/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb) (spoiler: no abrirla antes de resolver)
+
+### Opción B. Polarización comparada: América Latina y el mundo (World Values Survey)
+La misma pregunta, en el terreno de las encuestas: ¿está América Latina más polarizada que
+el resto del mundo? Hay que construir una medida de polarización de actitudes comparable
+entre países a partir del World Values Survey (ola 7, 2017-2022). El marco es el de
+DiMaggio, Evans y Bryson (1996) y sus cuatro principios —dispersión, bimodalidad,
+restricción y consolidación—, que en el taller se aplican a Argentina con LAPOP y acá se
+extienden a una comparación internacional.
+- [Consigna](https://github.com/gefero/factor_data_tuto_NLP_SICSS/blob/main/consigna_desafio/encuestas/consigna_trabajo_final_polarizacion_WVS_v3.md)
