@@ -193,13 +193,16 @@ distinta amplitud, ítems invertidos, ponderadores), cómo se operacionaliza cad
 y si los cuatro se combinan o no en un índice único.
 
 - **Datos:** el archivo integrado de la ola 7 está versionado en
-  [`consigna_desafio/encuestas/data/`](consigna_desafio/encuestas/data). Descarga directa:
-  [CSV](https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main/consigna_desafio/encuestas/data/F00011356-WVS_Cross-National_Wave_7_csv_v6_0.zip)
-  (21 MB comprimido, 190 MB al descomprimir) ·
-  [RDS](https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main/consigna_desafio/encuestas/data/F00011421-WVS_Cross-National_Wave_7_rds_v6_0.zip)
-  (19 MB) ·
-  [cuestionario maestro](https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main/consigna_desafio/encuestas/data/F00010738-WVS-7_Master_Questionnaire_2017-2020_English%20%281%29.pdf)
-  (PDF). El libro de códigos todavía no está: se baja del
+  [`consigna_desafio/encuestas/data/`](consigna_desafio/encuestas/data). Un click en
+  cada link baja el archivo:
+  - [**Descargar datos en CSV**](https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main/consigna_desafio/encuestas/data/F00011356-WVS_Cross-National_Wave_7_csv_v6_0.zip)
+    — `.zip`, 21 MB comprimido, 190 MB al descomprimir.
+  - [**Descargar datos en RDS**](https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main/consigna_desafio/encuestas/data/F00011421-WVS_Cross-National_Wave_7_rds_v6_0.zip)
+    — `.zip`, 19 MB. El mismo archivo integrado, para leer desde R con `readRDS()`.
+  - [**Descargar cuestionario maestro**](https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main/consigna_desafio/encuestas/data/F00010738-WVS-7_Master_Questionnaire_2017-2020_English%20%281%29.pdf)
+    — PDF, versión en inglés.
+
+  El libro de códigos todavía no está: se baja del
   [sitio de WVS](https://www.worldvaluessurvey.org/WVSDocumentationWV7.jsp).
 
 ### Datos (`data/`)
@@ -442,13 +445,16 @@ scales of differing width, reverse-coded items, weights), how each principle is
 operationalized, and whether the four are combined into a single index or not.
 
 - **Data:** the wave 7 integrated file is tracked in
-  [`consigna_desafio/encuestas/data/`](consigna_desafio/encuestas/data). Direct downloads:
-  [CSV](https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main/consigna_desafio/encuestas/data/F00011356-WVS_Cross-National_Wave_7_csv_v6_0.zip)
-  (21 MB compressed, 190 MB once unzipped) ·
-  [RDS](https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main/consigna_desafio/encuestas/data/F00011421-WVS_Cross-National_Wave_7_rds_v6_0.zip)
-  (19 MB) ·
-  [master questionnaire](https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main/consigna_desafio/encuestas/data/F00010738-WVS-7_Master_Questionnaire_2017-2020_English%20%281%29.pdf)
-  (PDF). The codebook is not there yet: it is downloaded from the
+  [`consigna_desafio/encuestas/data/`](consigna_desafio/encuestas/data). One click on
+  each link downloads the file:
+  - [**Download data as CSV**](https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main/consigna_desafio/encuestas/data/F00011356-WVS_Cross-National_Wave_7_csv_v6_0.zip)
+    — `.zip`, 21 MB compressed, 190 MB once unzipped.
+  - [**Download data as RDS**](https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main/consigna_desafio/encuestas/data/F00011421-WVS_Cross-National_Wave_7_rds_v6_0.zip)
+    — `.zip`, 19 MB. The same integrated file, to read from R with `readRDS()`.
+  - [**Download master questionnaire**](https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main/consigna_desafio/encuestas/data/F00010738-WVS-7_Master_Questionnaire_2017-2020_English%20%281%29.pdf)
+    — PDF, English version.
+
+  The codebook is not there yet: it is downloaded from the
   [WVS site](https://www.worldvaluessurvey.org/WVSDocumentationWV7.jsp).
 
 ### Data (`data/`)
