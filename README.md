@@ -25,7 +25,9 @@ de tweets para las prácticas hands-on.
 ├── cap1/   # Clase 1 (M1): Word embeddings
 ├── cap2/   # Clase 2 (M2): Transformers
 ├── cap3/   # Clase 3 (M3): LLMs y prompt engineering
-├── consigna_desafio/   # Desafío integrador: índice de polarización
+├── consigna_desafio/   # Trabajo final: dos consignas a elección
+│   ├── clasificacion/   # Opción A: índice de polarización en comentarios de noticias
+│   └── encuestas/   # Opción B: polarización comparada con el World Values Survey
 ├── data/   # Datasets de tweets para las prácticas
 ├── imgs/   # Logos e imágenes institucionales
 ├── LICENSE
@@ -41,11 +43,12 @@ Colab/Drive usadas en cada práctica.
 
 | Carpeta | Archivos locales | Tema | Slides (Google) | Notebook |
 |---|---|---|---|---|
-| [`cap0/`](cap0) | [`00 - SICSS-BAires - Topic Modeling.pdf`](<cap0/00 - SICSS-BAires - Topic Modeling.pdf>) | Introducción a NLP y modelado de tópicos (LDA) | [M0](https://docs.google.com/presentation/d/1ZoOBD8BvoVZkAu_58hRxQe2xowutgVfrsGJo3tR4QeY/edit?usp=sharing) | [M0](https://drive.google.com/file/d/1dpL7G5Cp5Zpi3Rkzp1MrTSYRG_VjCAN0/view?usp=drive_link) |
-| [`cap1/`](cap1) | [`01 - SICSS-BAires - Embeddings.pdf`](<cap1/01 - SICSS-BAires - Embeddings.pdf>), [`01 - SICSS-BAires - Ilustracion Embeddings.ipynb`](<cap1/01 - SICSS-BAires - Ilustracion Embeddings.ipynb>) | Word embeddings estáticos (word2vec) | [M1](https://docs.google.com/presentation/d/1AQ9mwtzUg23ePFU37xi0usMqIVRizvyefeBVp8fatEY/edit?usp=sharing) | [M1](https://colab.research.google.com/drive/1UUr5TWTf1DR-U_QGNyFxaYhtA9Vj06WP?usp=sharing) |
-| [`cap2/`](cap2) | [`02 -  SICSS - BAires - Transformers.pdf`](<cap2/02 -  SICSS - BAires - Transformers.pdf>), [`02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb`](<cap2/02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb>) | Arquitectura Transformer y self-attention | [M2](https://docs.google.com/presentation/d/1WW7WRTLpKdnNJDQY3j9FnNpOSMYSC27IQILWU98lOoA/edit?usp=sharing) | [M2](https://colab.research.google.com/drive/1bTeXc6RHtIQaOcD0v1C5YTE2VKTQ-hlI?usp=sharing) |
-| [`cap3/`](cap3) | [`03 - SICSS-Baires - LLMs.pdf`](<cap3/03 - SICSS-Baires - LLMs.pdf>) | Large Language Models y prompt engineering | [M3](https://docs.google.com/presentation/d/1mtF_NDhC8dnK7CAWxcgTcdErfrcu2EPxe5JPe-L2yuE/edit?usp=sharing) | [Acuerdo entre anotadores](cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb) |
-| [`consigna_desafio/`](consigna_desafio) | [`CONSIGNA.md`](consigna_desafio/CONSIGNA.md), [`SICSS_BAires_TP_Final_Esqueleto.ipynb`](consigna_desafio/SICSS_BAires_TP_Final_Esqueleto.ipynb), [`SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb`](consigna_desafio/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb) | Trabajo final: índice de polarización en comentarios de noticias | — | [Consigna](consigna_desafio/CONSIGNA.md) · [Esqueleto](consigna_desafio/SICSS_BAires_TP_Final_Esqueleto.ipynb) · [Solución](consigna_desafio/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb) |
+| [`cap0/`](cap0) | [`00 - SICSS-BAires - Topic Modeling.pdf`](<cap0/00 - SICSS-BAires - Topic Modeling.pdf>), [`00_SICSS_BAires_Vectorización.ipynb`](<cap0/00_SICSS_BAires_Vectorización.ipynb>), [`00_SICSS_BAires_Vectorización_R.Rmd`](<cap0/00_SICSS_BAires_Vectorización_R.Rmd>), [`ejemplo_clasificacion.ipynb`](cap0/ejemplo_clasificacion.ipynb) | Introducción a NLP y modelado de tópicos (LDA) | [M0](https://docs.google.com/presentation/d/1ZoOBD8BvoVZkAu_58hRxQe2xowutgVfrsGJo3tR4QeY/edit?usp=sharing) | [M0](https://drive.google.com/file/d/1dpL7G5Cp5Zpi3Rkzp1MrTSYRG_VjCAN0/view?usp=drive_link) |
+| [`cap1/`](cap1) | [`01 - SICSS-BAires - Embeddings.pdf`](<cap1/01 - SICSS-BAires - Embeddings.pdf>), [`01_SICSS_BAires_Ilustracion_Embeddings.ipynb`](cap1/01_SICSS_BAires_Ilustracion_Embeddings.ipynb) | Word embeddings estáticos (word2vec) | [M1](https://docs.google.com/presentation/d/1AQ9mwtzUg23ePFU37xi0usMqIVRizvyefeBVp8fatEY/edit?usp=sharing) | [M1](https://colab.research.google.com/drive/1UUr5TWTf1DR-U_QGNyFxaYhtA9Vj06WP?usp=sharing) |
+| [`cap2/`](cap2) | [`02 -  SICSS - BAires - Transformers.pdf`](<cap2/02 -  SICSS - BAires - Transformers.pdf>), [`02_SICSS_BAires_Hate_Speech_con_pysentimiento.ipynb`](cap2/02_SICSS_BAires_Hate_Speech_con_pysentimiento.ipynb), [`02_SICSS_BAires_Transformers.ipynb`](cap2/02_SICSS_BAires_Transformers.ipynb), [`02_SICSS_BAires_Transformers_R.Rmd`](cap2/02_SICSS_BAires_Transformers_R.Rmd) | Arquitectura Transformer y self-attention | [M2](https://docs.google.com/presentation/d/1WW7WRTLpKdnNJDQY3j9FnNpOSMYSC27IQILWU98lOoA/edit?usp=sharing) | [M2](https://colab.research.google.com/drive/1bTeXc6RHtIQaOcD0v1C5YTE2VKTQ-hlI?usp=sharing) |
+| [`cap3/`](cap3) | [`03 - SICSS-Baires - LLMs.pdf`](<cap3/03 - SICSS-Baires - LLMs.pdf>), [`03_SICSS_Baires_LLMs.ipynb`](cap3/03_SICSS_Baires_LLMs.ipynb), [`03_SICSS_Baires_LLMs_R.Rmd`](cap3/03_SICSS_Baires_LLMs_R.Rmd), [`03_SICSS_Baires_LLMs_y_Anotación.ipynb`](<cap3/03_SICSS_Baires_LLMs_y_Anotación.ipynb>), [`03_SICSS_Baires_LLMS_Sesgos.ipynb`](cap3/03_SICSS_Baires_LLMS_Sesgos.ipynb), [`03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb`](cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb) | Large Language Models y prompt engineering | [M3](https://docs.google.com/presentation/d/1mtF_NDhC8dnK7CAWxcgTcdErfrcu2EPxe5JPe-L2yuE/edit?usp=sharing) | [Acuerdo entre anotadores](cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb) |
+| [`consigna_desafio/clasificacion/`](consigna_desafio/clasificacion) | [`CONSIGNA.md`](consigna_desafio/clasificacion/CONSIGNA.md), [`SICSS_BAires_TP_Final_Esqueleto.ipynb`](consigna_desafio/clasificacion/SICSS_BAires_TP_Final_Esqueleto.ipynb), [`SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb`](consigna_desafio/clasificacion/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb) | **Trabajo final, opción A:** índice de polarización en comentarios de noticias | — | [Consigna](consigna_desafio/clasificacion/CONSIGNA.md) · [Esqueleto](consigna_desafio/clasificacion/SICSS_BAires_TP_Final_Esqueleto.ipynb) · [Solución](consigna_desafio/clasificacion/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb) |
+| [`consigna_desafio/encuestas/`](consigna_desafio/encuestas) | [`consigna_trabajo_final_polarizacion_WVS_v3.md`](consigna_desafio/encuestas/consigna_trabajo_final_polarizacion_WVS_v3.md) | **Trabajo final, opción B:** polarización comparada con el World Values Survey | — | [Consigna](consigna_desafio/encuestas/consigna_trabajo_final_polarizacion_WVS_v3.md) |
 
 #### `cap0/` — Clase 0: Detectando tópicos en un corpus (68 slides)
 
@@ -65,7 +68,7 @@ Semántica léxica y semántica vectorial, matrices de co-ocurrencia palabra-con
 similitud coseno, la intuición de **word2vec** (skip-gram, negative sampling) y
 aplicaciones en ciencias sociales (detección de estereotipos, trayectorias).
 
-La notebook [`01 - SICSS-BAires - Ilustracion Embeddings.ipynb`](<cap1/01 - SICSS-BAires - Ilustracion Embeddings.ipynb>)
+La notebook [`01_SICSS_BAires_Ilustracion_Embeddings.ipynb`](cap1/01_SICSS_BAires_Ilustracion_Embeddings.ipynb)
 ilustra el uso de embeddings estáticos en español para detectar estereotipos
 culturales (género, pobreza) frente a dimensiones dependientes (deportes,
 ocupaciones, música, etc.), calculando la distancia coseno entre los vectores
@@ -86,7 +89,7 @@ entrada/salida, self-attention (vectores Query/Key/Value), atención multicabeza
 (multi-head attention) y positional encoding. Reseña de GPT y BERT. Incluye
 consignas hands-on con `pysentimiento` sobre un dataset de comentarios.
 
-La notebook [`02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb`](<cap2/02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb>)
+La notebook [`02_SICSS_BAires_Hate_Speech_con_pysentimiento.ipynb`](cap2/02_SICSS_BAires_Hate_Speech_con_pysentimiento.ipynb)
 usa el modelo de discurso de odio en español de `pysentimiento` (RoBERTuito
 fine-tuneado) para predecir `HS` sobre el split de test de HatEval
 (`data/hateval_test_df.csv`), y compara el resultado contra las
@@ -122,16 +125,29 @@ como techo realista contra el que evaluar a un LLM anotador.
 
 #### `consigna_desafio/` — Trabajo final: polarización
 
-La [consigna](consigna_desafio/CONSIGNA.md) cierra el taller con un trabajo que usa lo
-visto para responder una pregunta sustantiva en vez de enseñar una técnica: **¿qué
-noticias polarizan la conversación de sus lectores?** Se resuelve en unas 6 horas, en
-grupos de 3 o 4, y se entrega como una presentación breve. Deliberadamente **no dice
-cómo operacionalizar la polarización**: da requisitos y casos de prueba que el índice
-tiene que saber distinguir, y la estrategia metodológica la deciden los grupos. Hay un
-[esqueleto de notebook](consigna_desafio/SICSS_BAires_TP_Final_Esqueleto.ipynb) con las
-secciones vacías para ordenarse.
+El taller cierra con un trabajo final que usa lo visto para responder una pregunta
+sustantiva en vez de enseñar una técnica. Hay **dos consignas a elección**, una por
+camino metodológico; cada grupo elige una. El entregable es el mismo en las dos: una
+presentación de unos 10 minutos que reseñe las decisiones metodológicas y los
+principales resultados, con la notebook del análisis como respaldo.
 
-La notebook [`SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb`](consigna_desafio/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb)
+| Opción | Consigna | Pregunta |
+|---|---|---|
+| **A. Clasificación** | [`clasificacion/CONSIGNA.md`](consigna_desafio/clasificacion/CONSIGNA.md) | ¿Qué noticias polarizan la conversación de sus lectores? |
+| **B. Encuestas** | [`encuestas/consigna_trabajo_final_polarizacion_WVS_v3.md`](consigna_desafio/encuestas/consigna_trabajo_final_polarizacion_WVS_v3.md) | ¿Está América Latina más polarizada que el resto del mundo? |
+
+##### Opción A — `clasificacion/`: índice de polarización a nivel noticia
+
+La [consigna](consigna_desafio/clasificacion/CONSIGNA.md) pide construir un índice de
+polarización **a nivel noticia**: una función que toma todos los comentarios que recibió
+una noticia y devuelve un número. Deliberadamente **no dice cómo operacionalizar la
+polarización**: plantea siete preguntas abiertas —qué significa que una noticia sea
+polarizante, cómo hacer el índice comparable entre noticias, sobre cuántos comentarios es
+válido calcularlo, cómo validarlo— y la estrategia metodológica la deciden los grupos. Hay
+un [esqueleto de notebook](consigna_desafio/clasificacion/SICSS_BAires_TP_Final_Esqueleto.ipynb)
+con las secciones vacías para ordenarse.
+
+La notebook [`SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb`](consigna_desafio/clasificacion/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb)
 es **una solución posible** (spoiler: no abrirla antes de resolver la consigna).
 Clasifica comentarios de lectores del dataset
 [`finiteautomata/news-argentina`](https://huggingface.co/datasets/finiteautomata/news-argentina)
@@ -151,7 +167,34 @@ que se mide es una propiedad del colectivo.
   `matplotlib`, `seaborn`, `tqdm`.
 - **Datos:** se descargan de HuggingFace; nada en `data/`.
 - **Requiere GPU** (Colab). El costo se controla con `N_NOTICIAS`.
-- Ver [`consigna_desafio/README.md`](consigna_desafio/README.md) para el detalle.
+
+##### Opción B — `encuestas/`: polarización comparada con el World Values Survey
+
+La [consigna](consigna_desafio/encuestas/consigna_trabajo_final_polarizacion_WVS_v3.md)
+lleva la misma pregunta al terreno de las encuestas: **¿está América Latina más polarizada
+que el resto del mundo?** Hay que construir una medida de polarización de actitudes
+**comparable entre países** a partir del World Values Survey (ola 7, 2017-2022) y usarla
+para responder.
+
+El marco es el de DiMaggio, Evans y Bryson (1996), que descompone la polarización en
+cuatro principios que pueden moverse en direcciones independientes:
+
+| Principio | Qué mide |
+|---|---|
+| **Dispersión** | Cuánto se alejan las opiniones del promedio y entre sí |
+| **Bimodalidad** | Si la distribución tiene dos picos y se vacía en el centro |
+| **Restricción** | Si las actitudes sobre temas distintos se responden de forma coherente entre sí |
+| **Consolidación** | Si las posiciones se alinean con la ideología declarada o con clivajes sociales |
+
+En el taller ese esquema se aplica a Argentina con LAPOP; la consigna lo extiende a una
+comparación internacional. Las decisiones abiertas son qué dominio de actitudes se mide y
+con qué ítems, qué países entran, cómo se preparan los datos (no respuestas, escalas de
+distinta amplitud, ítems invertidos, ponderadores), cómo se operacionaliza cada principio
+y si los cuatro se combinan o no en un índice único.
+
+> Los tres links a los materiales de WVS —datos de la ola 7, libro de códigos y
+> cuestionario— todavía están vacíos en la consigna. Hay que completarlos antes de
+> repartirla.
 
 ### Datos (`data/`)
 
@@ -195,14 +238,16 @@ curso y los links a las diapositivas y notebooks de cada módulo:
 1. Recorrer las diapositivas en orden: `cap0`/M0 → `cap1`/M1 → `cap2`/M2 →
    `cap3`/M3, ya sea desde los PDFs locales o desde los links de Google Slides
    del [sitio del curso](https://gefero.github.io/factor_data_tuto_NLP_SICSS/).
-2. Abrir las notebooks de cada módulo en Google Colab/Drive (o la notebook
-   local de `cap1/` en Jupyter) para reproducir las prácticas.
+2. Abrir las notebooks de cada módulo en Google Colab/Drive, o las copias
+   locales de `cap0/`–`cap3/` en Jupyter, para reproducir las prácticas.
 3. Descomprimir los datasets de `data/` para las consignas hands-on de tópicos y
    transformers.
+4. Elegir una de las dos consignas de `consigna_desafio/` para el trabajo final.
 
-> Nota: las notebooks de práctica de M0–M2 se distribuyen vía Google
-> Colab/Drive (ver tabla y links por capítulo arriba) y no están versionadas en
-> este repositorio; solo la notebook de `cap1/` tiene una copia local.
+> Nota: las notebooks también circulan por Google Colab/Drive durante la cursada
+> (ver tabla y links por capítulo arriba), y esas versiones pueden estar más
+> actualizadas que las copias versionadas acá. Las traducciones a R están como
+> `.Rmd` junto a la notebook de Python correspondiente.
 
 ### Licencia
 
@@ -222,7 +267,9 @@ Este repositorio se distribuye bajo licencia [MIT](LICENSE).
 ├── cap1/   # Session 1 (M1): Word embeddings
 ├── cap2/   # Session 2 (M2): Transformers
 ├── cap3/   # Session 3 (M3): LLMs and prompt engineering
-├── consigna_desafio/   # Capstone challenge: polarization index
+├── consigna_desafio/   # Final assignment: two briefs to choose from
+│   ├── clasificacion/   # Option A: polarization index over news comments
+│   └── encuestas/   # Option B: comparative polarization with the World Values Survey
 ├── data/   # Tweet datasets for the hands-on exercises
 ├── imgs/   # Institutional logos and images
 ├── LICENSE
@@ -238,11 +285,12 @@ practice.
 
 | Folder | Local files | Topic | Slides (Google) | Notebook |
 |---|---|---|---|---|
-| [`cap0/`](cap0) | [`00 - SICSS-BAires - Topic Modeling.pdf`](<cap0/00 - SICSS-BAires - Topic Modeling.pdf>) | Intro to NLP and topic modeling (LDA) | [M0](https://docs.google.com/presentation/d/1ZoOBD8BvoVZkAu_58hRxQe2xowutgVfrsGJo3tR4QeY/edit?usp=sharing) | [M0](https://drive.google.com/file/d/1dpL7G5Cp5Zpi3Rkzp1MrTSYRG_VjCAN0/view?usp=drive_link) |
-| [`cap1/`](cap1) | [`01 - SICSS-BAires - Embeddings.pdf`](<cap1/01 - SICSS-BAires - Embeddings.pdf>), [`01 - SICSS-BAires - Ilustracion Embeddings.ipynb`](<cap1/01 - SICSS-BAires - Ilustracion Embeddings.ipynb>) | Static word embeddings (word2vec) | [M1](https://docs.google.com/presentation/d/1AQ9mwtzUg23ePFU37xi0usMqIVRizvyefeBVp8fatEY/edit?usp=sharing) | [M1](https://colab.research.google.com/drive/1UUr5TWTf1DR-U_QGNyFxaYhtA9Vj06WP?usp=sharing) |
-| [`cap2/`](cap2) | [`02 -  SICSS - BAires - Transformers.pdf`](<cap2/02 -  SICSS - BAires - Transformers.pdf>), [`02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb`](<cap2/02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb>) | Transformer architecture and self-attention | [M2](https://docs.google.com/presentation/d/1WW7WRTLpKdnNJDQY3j9FnNpOSMYSC27IQILWU98lOoA/edit?usp=sharing) | [M2](https://colab.research.google.com/drive/1bTeXc6RHtIQaOcD0v1C5YTE2VKTQ-hlI?usp=sharing) |
-| [`cap3/`](cap3) | [`03 - SICSS-Baires - LLMs.pdf`](<cap3/03 - SICSS-Baires - LLMs.pdf>) | Large Language Models and prompt engineering | [M3](https://docs.google.com/presentation/d/1mtF_NDhC8dnK7CAWxcgTcdErfrcu2EPxe5JPe-L2yuE/edit?usp=sharing) | [Annotator agreement](cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb) |
-| [`consigna_desafio/`](consigna_desafio) | [`CONSIGNA.md`](consigna_desafio/CONSIGNA.md), [`SICSS_BAires_TP_Final_Esqueleto.ipynb`](consigna_desafio/SICSS_BAires_TP_Final_Esqueleto.ipynb), [`SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb`](consigna_desafio/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb) | Final assignment: a polarization index over news comments | — | [Brief](consigna_desafio/CONSIGNA.md) · [Skeleton](consigna_desafio/SICSS_BAires_TP_Final_Esqueleto.ipynb) · [Solution](consigna_desafio/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb) |
+| [`cap0/`](cap0) | [`00 - SICSS-BAires - Topic Modeling.pdf`](<cap0/00 - SICSS-BAires - Topic Modeling.pdf>), [`00_SICSS_BAires_Vectorización.ipynb`](<cap0/00_SICSS_BAires_Vectorización.ipynb>), [`00_SICSS_BAires_Vectorización_R.Rmd`](<cap0/00_SICSS_BAires_Vectorización_R.Rmd>), [`ejemplo_clasificacion.ipynb`](cap0/ejemplo_clasificacion.ipynb) | Intro to NLP and topic modeling (LDA) | [M0](https://docs.google.com/presentation/d/1ZoOBD8BvoVZkAu_58hRxQe2xowutgVfrsGJo3tR4QeY/edit?usp=sharing) | [M0](https://drive.google.com/file/d/1dpL7G5Cp5Zpi3Rkzp1MrTSYRG_VjCAN0/view?usp=drive_link) |
+| [`cap1/`](cap1) | [`01 - SICSS-BAires - Embeddings.pdf`](<cap1/01 - SICSS-BAires - Embeddings.pdf>), [`01_SICSS_BAires_Ilustracion_Embeddings.ipynb`](cap1/01_SICSS_BAires_Ilustracion_Embeddings.ipynb) | Static word embeddings (word2vec) | [M1](https://docs.google.com/presentation/d/1AQ9mwtzUg23ePFU37xi0usMqIVRizvyefeBVp8fatEY/edit?usp=sharing) | [M1](https://colab.research.google.com/drive/1UUr5TWTf1DR-U_QGNyFxaYhtA9Vj06WP?usp=sharing) |
+| [`cap2/`](cap2) | [`02 -  SICSS - BAires - Transformers.pdf`](<cap2/02 -  SICSS - BAires - Transformers.pdf>), [`02_SICSS_BAires_Hate_Speech_con_pysentimiento.ipynb`](cap2/02_SICSS_BAires_Hate_Speech_con_pysentimiento.ipynb), [`02_SICSS_BAires_Transformers.ipynb`](cap2/02_SICSS_BAires_Transformers.ipynb), [`02_SICSS_BAires_Transformers_R.Rmd`](cap2/02_SICSS_BAires_Transformers_R.Rmd) | Transformer architecture and self-attention | [M2](https://docs.google.com/presentation/d/1WW7WRTLpKdnNJDQY3j9FnNpOSMYSC27IQILWU98lOoA/edit?usp=sharing) | [M2](https://colab.research.google.com/drive/1bTeXc6RHtIQaOcD0v1C5YTE2VKTQ-hlI?usp=sharing) |
+| [`cap3/`](cap3) | [`03 - SICSS-Baires - LLMs.pdf`](<cap3/03 - SICSS-Baires - LLMs.pdf>), [`03_SICSS_Baires_LLMs.ipynb`](cap3/03_SICSS_Baires_LLMs.ipynb), [`03_SICSS_Baires_LLMs_R.Rmd`](cap3/03_SICSS_Baires_LLMs_R.Rmd), [`03_SICSS_Baires_LLMs_y_Anotación.ipynb`](<cap3/03_SICSS_Baires_LLMs_y_Anotación.ipynb>), [`03_SICSS_Baires_LLMS_Sesgos.ipynb`](cap3/03_SICSS_Baires_LLMS_Sesgos.ipynb), [`03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb`](cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb) | Large Language Models and prompt engineering | [M3](https://docs.google.com/presentation/d/1mtF_NDhC8dnK7CAWxcgTcdErfrcu2EPxe5JPe-L2yuE/edit?usp=sharing) | [Annotator agreement](cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb) |
+| [`consigna_desafio/clasificacion/`](consigna_desafio/clasificacion) | [`CONSIGNA.md`](consigna_desafio/clasificacion/CONSIGNA.md), [`SICSS_BAires_TP_Final_Esqueleto.ipynb`](consigna_desafio/clasificacion/SICSS_BAires_TP_Final_Esqueleto.ipynb), [`SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb`](consigna_desafio/clasificacion/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb) | **Final assignment, option A:** a polarization index over news comments | — | [Brief](consigna_desafio/clasificacion/CONSIGNA.md) · [Skeleton](consigna_desafio/clasificacion/SICSS_BAires_TP_Final_Esqueleto.ipynb) · [Solution](consigna_desafio/clasificacion/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb) |
+| [`consigna_desafio/encuestas/`](consigna_desafio/encuestas) | [`consigna_trabajo_final_polarizacion_WVS_v3.md`](consigna_desafio/encuestas/consigna_trabajo_final_polarizacion_WVS_v3.md) | **Final assignment, option B:** comparative polarization with the World Values Survey | — | [Brief](consigna_desafio/encuestas/consigna_trabajo_final_polarizacion_WVS_v3.md) |
 
 #### `cap0/` — Session 0: Detecting topics in a corpus (68 slides)
 
@@ -262,7 +310,7 @@ Lexical vs. vector semantics, word-context co-occurrence matrices, cosine
 similarity, the intuition behind **word2vec** (skip-gram, negative sampling), and
 social-science applications (stereotype detection, trajectories).
 
-The notebook [`01 - SICSS-BAires - Ilustracion Embeddings.ipynb`](<cap1/01 - SICSS-BAires - Ilustracion Embeddings.ipynb>)
+The notebook [`01_SICSS_BAires_Ilustracion_Embeddings.ipynb`](cap1/01_SICSS_BAires_Ilustracion_Embeddings.ipynb)
 shows how to use Spanish static word embeddings to detect cultural stereotypes
 (gender, poverty) against dependent dimensions (sports, occupations, music,
 etc.) by computing cosine distance between each dimension's average vector.
@@ -282,7 +330,7 @@ self-attention (Query/Key/Value vectors), multi-head attention, and positional
 encoding. Overview of GPT and BERT. Includes hands-on instructions using
 `pysentimiento` on a comments dataset.
 
-The notebook [`02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb`](<cap2/02 - SICSS-BAires - Hate Speech con pysentimiento.ipynb>)
+The notebook [`02_SICSS_BAires_Hate_Speech_con_pysentimiento.ipynb`](cap2/02_SICSS_BAires_Hate_Speech_con_pysentimiento.ipynb)
 uses `pysentimiento`'s Spanish hate-speech model (a fine-tuned RoBERTuito) to
 predict `HS` on the HatEval test split (`data/hateval_test_df.csv`), and
 compares the result against the classical representations (TF, TF-IDF,
@@ -319,16 +367,30 @@ evaluate an LLM annotator against.
 
 #### `consigna_desafio/` — Final assignment: polarization
 
-The [assignment brief](consigna_desafio/CONSIGNA.md) closes the workshop with a task that
-uses what was covered to answer a substantive question rather than to teach a technique:
-**which news stories polarize their readers' conversation?** It takes about 6 hours, in
-groups of 3 or 4, and is handed in as a short presentation. It deliberately **does not
-say how to operationalize polarization**: it gives requirements and test cases the index
-must tell apart, and each group decides the methodological strategy. A
-[skeleton notebook](consigna_desafio/SICSS_BAires_TP_Final_Esqueleto.ipynb) with empty
-sections is provided to get organized.
+The workshop closes with a final assignment that uses what was covered to answer a
+substantive question rather than to teach a technique. There are **two briefs to choose
+from**, one per methodological route; each group picks one. The deliverable is the same in
+both: a roughly 10-minute presentation reviewing the methodological decisions and the main
+results, with the analysis notebook as backup.
 
-The notebook [`SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb`](consigna_desafio/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb)
+| Option | Brief | Question |
+|---|---|---|
+| **A. Classification** | [`clasificacion/CONSIGNA.md`](consigna_desafio/clasificacion/CONSIGNA.md) | Which news stories polarize their readers' conversation? |
+| **B. Surveys** | [`encuestas/consigna_trabajo_final_polarizacion_WVS_v3.md`](consigna_desafio/encuestas/consigna_trabajo_final_polarizacion_WVS_v3.md) | Is Latin America more polarized than the rest of the world? |
+
+##### Option A — `clasificacion/`: an article-level polarization index
+
+The [brief](consigna_desafio/clasificacion/CONSIGNA.md) (in Spanish) asks for a
+polarization index **at the article level**: a function that takes every comment an
+article received and returns a number. It deliberately **does not say how to
+operationalize polarization**: it poses seven open questions — what it might mean for an
+article to be polarizing, how to make the index comparable across articles, how many
+comments are enough for it to be valid, how to validate it — and each group decides the
+methodological strategy. A
+[skeleton notebook](consigna_desafio/clasificacion/SICSS_BAires_TP_Final_Esqueleto.ipynb)
+with empty sections is provided to get organized.
+
+The notebook [`SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb`](consigna_desafio/clasificacion/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb)
 is **one possible solution** (spoiler: do not open it before working through the brief).
 It classifies reader comments from the
 [`finiteautomata/news-argentina`](https://huggingface.co/datasets/finiteautomata/news-argentina)
@@ -348,7 +410,33 @@ and what gets measured is a property of the collective.
   `matplotlib`, `seaborn`, `tqdm`.
 - **Data:** downloaded from HuggingFace; nothing in `data/`.
 - **Requires a GPU** (Colab). Cost is controlled by `N_NOTICIAS`.
-- See [`consigna_desafio/README.md`](consigna_desafio/README.md) for details.
+
+##### Option B — `encuestas/`: comparative polarization with the World Values Survey
+
+The [brief](consigna_desafio/encuestas/consigna_trabajo_final_polarizacion_WVS_v3.md) (in
+Spanish) takes the same question to survey data: **is Latin America more polarized than the
+rest of the world?** It asks for a measure of attitude polarization that is **comparable
+across countries**, built from the World Values Survey (wave 7, 2017-2022), and for using
+it to answer.
+
+The framework is DiMaggio, Evans and Bryson (1996), which breaks polarization into four
+principles that can move in independent directions:
+
+| Principle | What it measures |
+|---|---|
+| **Dispersion** | How far opinions sit from the mean and from each other |
+| **Bimodality** | Whether the distribution has two peaks and empties out in the middle |
+| **Constraint** | Whether attitudes on unrelated issues are answered coherently with one another |
+| **Consolidation** | Whether positions align with declared ideology or with social cleavages |
+
+The workshop applies that scheme to Argentina using LAPOP; this brief extends it to an
+international comparison. The open decisions are which attitude domain gets measured and
+with which items, which countries are included, how the data are prepared (missing answers,
+scales of differing width, reverse-coded items, weights), how each principle is
+operationalized, and whether the four are combined into a single index or not.
+
+> The brief's three links to the WVS materials — wave 7 data, codebook and questionnaire —
+> are still empty. They need to be filled in before handing it out.
 
 ### Data (`data/`)
 
@@ -393,14 +481,16 @@ the links to each module's slides and notebooks:
 1. Go through the slides in order: `cap0`/M0 → `cap1`/M1 → `cap2`/M2 →
    `cap3`/M3, either from the local PDFs or from the Google Slides links on the
    [course site](https://gefero.github.io/factor_data_tuto_NLP_SICSS/).
-2. Open each module's notebook in Google Colab/Drive (or the local `cap1/`
-   notebook in Jupyter) to reproduce the practices.
+2. Open each module's notebook in Google Colab/Drive, or the local copies in
+   `cap0/`–`cap3/` in Jupyter, to reproduce the practices.
 3. Unzip the datasets in `data/` for the topic-modeling and transformers
    hands-on exercises.
+4. Pick one of the two briefs in `consigna_desafio/` for the final assignment.
 
-> Note: the M0–M2 practice notebooks are distributed via Google Colab/Drive
-> (see the table and per-session links above) and are not tracked in this
-> repository; only the `cap1/` notebook has a local copy.
+> Note: the notebooks also circulate via Google Colab/Drive during the workshop
+> (see the table and per-session links above), and those versions may be more
+> up to date than the copies tracked here. R translations sit next to the
+> corresponding Python notebook as `.Rmd` files.
 
 ### License
 
