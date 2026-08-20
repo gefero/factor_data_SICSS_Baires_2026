@@ -93,4 +93,4 @@ DiMaggio, Evans y Bryson (1996) y sus cuatro principios —dispersión, bimodali
 restricción y consolidación—, que en el taller se aplican a Argentina con LAPOP y acá se
 extienden a una comparación internacional.
 - [Consigna](https://github.com/gefero/factor_data_tuto_NLP_SICSS/blob/main/consigna_desafio/encuestas/consigna_trabajo_final_polarizacion_WVS_v3.md)
-- [Datos y documentación](https://github.com/gefero/factor_data_tuto_NLP_SICSS/tree/main/consigna_desafio/encuestas/data): el archivo integrado de la ola 7 en CSV y en RDS, más el cuestionario maestro
+- Datos y documentación, con descarga directa: [archivo integrado de la ola 7 en CSV](https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main/consigna_desafio/encuestas/data/F00011356-WVS_Cross-National_Wave_7_csv_v6_0.zip) (21 MB) · [en RDS](https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main/consigna_desafio/encuestas/data/F00011421-WVS_Cross-National_Wave_7_rds_v6_0.zip) (19 MB) · [cuestionario maestro en PDF](https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main/consigna_desafio/encuestas/data/F00010738-WVS-7_Master_Questionnaire_2017-2020_English%20%281%29.pdf)
