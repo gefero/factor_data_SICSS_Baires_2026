@@ -24,10 +24,10 @@ En el taller aplicamos este esquema a Argentina con LAPOP. Acá lo extendemos a 
 Quisiéramos abordar la siguente pregunta: ¿Está América Latina más polarizada que el resto del mundo?
 
 
-El archivo integrado de la Ola 7 (2017–2022), el codebook y el cuestionario maestro están descargados y disponibles. 
-- [Datos WVS Ola7]()
-- [Libro de códigos]()
-- [Cuestionario]()
+El archivo integrado de la Ola 7 (2017–2022) y el cuestionario maestro están descargados y disponibles en [`data/`](data), en este mismo repositorio.
+- Datos WVS Ola 7, el mismo archivo integrado en dos formatos: [CSV](<data/F00011356-WVS_Cross-National_Wave_7_csv_v6_0.zip>) (21 MB comprimido, 190 MB al descomprimir) · [RDS](<data/F00011421-WVS_Cross-National_Wave_7_rds_v6_0.zip>) (19 MB, para leer desde R con `readRDS()`)
+- [Cuestionario maestro](<data/F00010738-WVS-7_Master_Questionnaire_2017-2020_English (1).pdf>) (versión en inglés)
+- Libro de códigos: no está descargado. Se baja del [sitio de WVS](https://www.worldvaluessurvey.org/WVSDocumentationWV7.jsp), junto a los archivos anteriores.
 
 Todo lo demás lo decide el grupo.
 

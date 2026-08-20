@@ -48,7 +48,7 @@ Colab/Drive usadas en cada práctica.
 | [`cap2/`](cap2) | [`02 -  SICSS - BAires - Transformers.pdf`](<cap2/02 -  SICSS - BAires - Transformers.pdf>), [`02_SICSS_BAires_Hate_Speech_con_pysentimiento.ipynb`](cap2/02_SICSS_BAires_Hate_Speech_con_pysentimiento.ipynb), [`02_SICSS_BAires_Transformers.ipynb`](cap2/02_SICSS_BAires_Transformers.ipynb), [`02_SICSS_BAires_Transformers_R.Rmd`](cap2/02_SICSS_BAires_Transformers_R.Rmd) | Arquitectura Transformer y self-attention | [M2](https://docs.google.com/presentation/d/1WW7WRTLpKdnNJDQY3j9FnNpOSMYSC27IQILWU98lOoA/edit?usp=sharing) | [M2](https://colab.research.google.com/drive/1bTeXc6RHtIQaOcD0v1C5YTE2VKTQ-hlI?usp=sharing) |
 | [`cap3/`](cap3) | [`03 - SICSS-Baires - LLMs.pdf`](<cap3/03 - SICSS-Baires - LLMs.pdf>), [`03_SICSS_Baires_LLMs.ipynb`](cap3/03_SICSS_Baires_LLMs.ipynb), [`03_SICSS_Baires_LLMs_R.Rmd`](cap3/03_SICSS_Baires_LLMs_R.Rmd), [`03_SICSS_Baires_LLMs_y_Anotación.ipynb`](<cap3/03_SICSS_Baires_LLMs_y_Anotación.ipynb>), [`03_SICSS_Baires_LLMS_Sesgos.ipynb`](cap3/03_SICSS_Baires_LLMS_Sesgos.ipynb), [`03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb`](cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb) | Large Language Models y prompt engineering | [M3](https://docs.google.com/presentation/d/1mtF_NDhC8dnK7CAWxcgTcdErfrcu2EPxe5JPe-L2yuE/edit?usp=sharing) | [Acuerdo entre anotadores](cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb) |
 | [`consigna_desafio/clasificacion/`](consigna_desafio/clasificacion) | [`CONSIGNA.md`](consigna_desafio/clasificacion/CONSIGNA.md), [`SICSS_BAires_TP_Final_Esqueleto.ipynb`](consigna_desafio/clasificacion/SICSS_BAires_TP_Final_Esqueleto.ipynb), [`SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb`](consigna_desafio/clasificacion/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb) | **Trabajo final, opción A:** índice de polarización en comentarios de noticias | — | [Consigna](consigna_desafio/clasificacion/CONSIGNA.md) · [Esqueleto](consigna_desafio/clasificacion/SICSS_BAires_TP_Final_Esqueleto.ipynb) · [Solución](consigna_desafio/clasificacion/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb) |
-| [`consigna_desafio/encuestas/`](consigna_desafio/encuestas) | [`consigna_trabajo_final_polarizacion_WVS_v3.md`](consigna_desafio/encuestas/consigna_trabajo_final_polarizacion_WVS_v3.md) | **Trabajo final, opción B:** polarización comparada con el World Values Survey | — | [Consigna](consigna_desafio/encuestas/consigna_trabajo_final_polarizacion_WVS_v3.md) |
+| [`consigna_desafio/encuestas/`](consigna_desafio/encuestas) | [`consigna_trabajo_final_polarizacion_WVS_v3.md`](consigna_desafio/encuestas/consigna_trabajo_final_polarizacion_WVS_v3.md), [`data/`](consigna_desafio/encuestas/data) (WVS ola 7 + cuestionario) | **Trabajo final, opción B:** polarización comparada con el World Values Survey | — | [Consigna](consigna_desafio/encuestas/consigna_trabajo_final_polarizacion_WVS_v3.md) |
 
 #### `cap0/` — Clase 0: Detectando tópicos en un corpus (68 slides)
 
@@ -192,9 +192,12 @@ con qué ítems, qué países entran, cómo se preparan los datos (no respuestas
 distinta amplitud, ítems invertidos, ponderadores), cómo se operacionaliza cada principio
 y si los cuatro se combinan o no en un índice único.
 
-> Los tres links a los materiales de WVS —datos de la ola 7, libro de códigos y
-> cuestionario— todavía están vacíos en la consigna. Hay que completarlos antes de
-> repartirla.
+- **Datos:** el archivo integrado de la ola 7 está versionado en
+  [`consigna_desafio/encuestas/data/`](consigna_desafio/encuestas/data), en CSV y en RDS
+  (~20 MB comprimido cada uno; el CSV pesa 190 MB al descomprimir), junto al
+  [cuestionario maestro](<consigna_desafio/encuestas/data/F00010738-WVS-7_Master_Questionnaire_2017-2020_English (1).pdf>)
+  en PDF. El libro de códigos todavía no está: se baja del
+  [sitio de WVS](https://www.worldvaluessurvey.org/WVSDocumentationWV7.jsp).
 
 ### Datos (`data/`)
 
@@ -290,7 +293,7 @@ practice.
 | [`cap2/`](cap2) | [`02 -  SICSS - BAires - Transformers.pdf`](<cap2/02 -  SICSS - BAires - Transformers.pdf>), [`02_SICSS_BAires_Hate_Speech_con_pysentimiento.ipynb`](cap2/02_SICSS_BAires_Hate_Speech_con_pysentimiento.ipynb), [`02_SICSS_BAires_Transformers.ipynb`](cap2/02_SICSS_BAires_Transformers.ipynb), [`02_SICSS_BAires_Transformers_R.Rmd`](cap2/02_SICSS_BAires_Transformers_R.Rmd) | Transformer architecture and self-attention | [M2](https://docs.google.com/presentation/d/1WW7WRTLpKdnNJDQY3j9FnNpOSMYSC27IQILWU98lOoA/edit?usp=sharing) | [M2](https://colab.research.google.com/drive/1bTeXc6RHtIQaOcD0v1C5YTE2VKTQ-hlI?usp=sharing) |
 | [`cap3/`](cap3) | [`03 - SICSS-Baires - LLMs.pdf`](<cap3/03 - SICSS-Baires - LLMs.pdf>), [`03_SICSS_Baires_LLMs.ipynb`](cap3/03_SICSS_Baires_LLMs.ipynb), [`03_SICSS_Baires_LLMs_R.Rmd`](cap3/03_SICSS_Baires_LLMs_R.Rmd), [`03_SICSS_Baires_LLMs_y_Anotación.ipynb`](<cap3/03_SICSS_Baires_LLMs_y_Anotación.ipynb>), [`03_SICSS_Baires_LLMS_Sesgos.ipynb`](cap3/03_SICSS_Baires_LLMS_Sesgos.ipynb), [`03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb`](cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb) | Large Language Models and prompt engineering | [M3](https://docs.google.com/presentation/d/1mtF_NDhC8dnK7CAWxcgTcdErfrcu2EPxe5JPe-L2yuE/edit?usp=sharing) | [Annotator agreement](cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb) |
 | [`consigna_desafio/clasificacion/`](consigna_desafio/clasificacion) | [`CONSIGNA.md`](consigna_desafio/clasificacion/CONSIGNA.md), [`SICSS_BAires_TP_Final_Esqueleto.ipynb`](consigna_desafio/clasificacion/SICSS_BAires_TP_Final_Esqueleto.ipynb), [`SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb`](consigna_desafio/clasificacion/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb) | **Final assignment, option A:** a polarization index over news comments | — | [Brief](consigna_desafio/clasificacion/CONSIGNA.md) · [Skeleton](consigna_desafio/clasificacion/SICSS_BAires_TP_Final_Esqueleto.ipynb) · [Solution](consigna_desafio/clasificacion/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb) |
-| [`consigna_desafio/encuestas/`](consigna_desafio/encuestas) | [`consigna_trabajo_final_polarizacion_WVS_v3.md`](consigna_desafio/encuestas/consigna_trabajo_final_polarizacion_WVS_v3.md) | **Final assignment, option B:** comparative polarization with the World Values Survey | — | [Brief](consigna_desafio/encuestas/consigna_trabajo_final_polarizacion_WVS_v3.md) |
+| [`consigna_desafio/encuestas/`](consigna_desafio/encuestas) | [`consigna_trabajo_final_polarizacion_WVS_v3.md`](consigna_desafio/encuestas/consigna_trabajo_final_polarizacion_WVS_v3.md), [`data/`](consigna_desafio/encuestas/data) (WVS wave 7 + questionnaire) | **Final assignment, option B:** comparative polarization with the World Values Survey | — | [Brief](consigna_desafio/encuestas/consigna_trabajo_final_polarizacion_WVS_v3.md) |
 
 #### `cap0/` — Session 0: Detecting topics in a corpus (68 slides)
 
@@ -435,8 +438,12 @@ with which items, which countries are included, how the data are prepared (missi
 scales of differing width, reverse-coded items, weights), how each principle is
 operationalized, and whether the four are combined into a single index or not.
 
-> The brief's three links to the WVS materials — wave 7 data, codebook and questionnaire —
-> are still empty. They need to be filled in before handing it out.
+- **Data:** the wave 7 integrated file is tracked in
+  [`consigna_desafio/encuestas/data/`](consigna_desafio/encuestas/data), as CSV and as RDS
+  (~20 MB compressed each; the CSV is 190 MB once unzipped), alongside the
+  [master questionnaire](<consigna_desafio/encuestas/data/F00010738-WVS-7_Master_Questionnaire_2017-2020_English (1).pdf>)
+  in PDF. The codebook is not there yet: it is downloaded from the
+  [WVS site](https://www.worldvaluessurvey.org/WVSDocumentationWV7.jsp).
 
 ### Data (`data/`)
 
