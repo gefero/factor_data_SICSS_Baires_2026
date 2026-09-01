@@ -48,7 +48,7 @@ Algunas preguntas para pensar el desafío:
 - Una presentación oral de unos 10 minutos, con slides, que reseñe decisiones metodológicas y principales resultados
 - La notebook con el análisis acompaña como respaldo, pero lo que se discute es la presentación.
 
-Tengan en cuenta que clasificar los comentarios es lo que ya hicieron en `cap2/` con `pysentimiento`; no
+Tengan en cuenta que clasificar los comentarios es lo que ya hicieron en `taller_nlp/cap2/` con `pysentimiento`; no
 gasten ahí más tiempo del necesario. Usen una muestra de noticias, no el corpus entero:
 con GPU y unas doscientas noticias les alcanza de sobra, y les deja tiempo para lo que
 importa.
