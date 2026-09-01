@@ -5,6 +5,9 @@ baseurl: /factor_data_tuto_NLP_SICSS
 show_downloads: false
 theme: jekyll-theme-cayman
 
+plugins:
+  - jekyll-seo-tag
+
 repo: https://github.com/gefero/factor_data_tuto_NLP_SICSS
 repo_raw: https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main
 

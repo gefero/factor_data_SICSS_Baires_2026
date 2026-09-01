@@ -6,6 +6,7 @@ data/tweets_menciones.csv
 _site/
 .jekyll-cache/
 .jekyll-metadata
+.sass-cache/
 Gemfile.lock
 
 # Byte-compiled / optimized / DLL files
