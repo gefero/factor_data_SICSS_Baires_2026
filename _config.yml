@@ -1,15 +1,15 @@
 title: SICSS - Buenos Aires 2026
 description: Summer Institute in Computational Social Sciences - Buenos Aires
 url: https://gefero.github.io
-baseurl: /factor_data_tuto_NLP_SICSS
+baseurl: /factor_data_SICSS_Baires_2026
 show_downloads: false
 theme: jekyll-theme-cayman
 
 plugins:
   - jekyll-seo-tag
 
-repo: https://github.com/gefero/factor_data_tuto_NLP_SICSS
-repo_raw: https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main
+repo: https://github.com/gefero/factor_data_SICSS_Baires_2026
+repo_raw: https://github.com/gefero/factor_data_SICSS_Baires_2026/raw/main
 
 defaults:
   - scope:

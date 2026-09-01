@@ -7,7 +7,7 @@ Buenos Aires 2026**, organizado por **[Factor~Data](https://factor-data.netlify.
 junto a la EIDAES-UNSAM: charlas, talleres (Procesamiento de Lenguaje Natural y
 Encuestas) y el trabajo final del instituto.
 
-🌐 **Sitio del instituto:** <https://gefero.github.io/factor_data_tuto_NLP_SICSS/> — ahí
+🌐 **Sitio del instituto:** <https://gefero.github.io/factor_data_SICSS_Baires_2026/> — ahí
 está la descripción de cada charla, cada módulo y cada consigna, con los links a
 diapositivas de Google Slides y notebooks de Colab/Drive. Este README es solo un mapa
 del repositorio.
@@ -40,7 +40,7 @@ con los punteros:
 
 ```
 git lfs install
-git clone https://github.com/gefero/factor_data_tuto_NLP_SICSS
+git clone https://github.com/gefero/factor_data_SICSS_Baires_2026
 ```
 
 Si ya clonaste sin `git-lfs` instalado, `git lfs pull` dentro del repo baja el contenido.
