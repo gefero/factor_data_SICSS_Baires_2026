@@ -1,96 +1,38 @@
-![Logos Factor~Data y SICSS](imgs/logo_final_conjunto.png)
-# Taller de Procesamiento de Lenguaje Natural
+---
+title: SICSS - Buenos Aires 2026
+description: Summer Institute in Computational Social Sciences
+permalink: /
+---
 
-# Docentes
-- [Germán Rosati](https://gefero.github.io/)
-- [Juan Manuel Pérez](https://www.linkedin.com/in/perezjuanma/)
-- [Tomás Maguire](https://www.linkedin.com/in/tomasebm/)
+![Logos Factor~Data y SICSS]({{ site.repo_raw }}/imgs/logos_final.png)
 
-# Ayudante
-- Román Fernández Arias
+# Summer Institute in Computational Social Sciences — Buenos Aires 2026
 
-# Presentación
-Este taller es una introducción práctica al **Procesamiento de Lenguaje Natural
-(NLP)** para la investigación en ciencias sociales, dictado en el **Summer
-Institute in Computational Social Sciences (SICSS) - Buenos Aires** por
-**[Factor~Data](https://factor-data.netlify.app/)**.
+Micrositio con todo el material del **SICSS-Buenos Aires 2026**: charlas, talleres y el
+trabajo final del instituto, organizado por **[Factor~Data](https://factor-data.netlify.app/)**
+junto a la **EIDAES-UNSAM**.
 
-Se propone que las y los asistentes:
-- comprendan conceptos metodológicos fundamentales para el preprocesamiento de
-  datos textuales (tokenización, lematización, stemming, etc.) y la
-  representación vectorial clásica de textos (Document-Term Matrix, Bag of
-  Words, etc.);
-- se introduzcan a técnicas modernas de representación vectorial de textos
-  (word embeddings, word2vec);
-- incorporen nociones básicas de la arquitectura Transformer (mecanismo de
-  atención, positional encoding, etc.);
-- se familiaricen con conceptos centrales de prompting (roles, instrucciones)
-  y con los riesgos y usos de los Large Language Models (LLMs).
+El repositorio completo, con todos los archivos, está en
+[GitHub]({{ site.repo }}).
 
-El repositorio con todo el material (diapositivas, notebooks y datasets) está
-disponible en [GitHub](https://github.com/gefero/factor_data_tuto_NLP_SICSS).
+## Contenidos
 
-# Contenidos y materiales
-## M0. Vecorizando un corpus
-Qué es NLP y el problema del dato no estructurado, un flujo de trabajo
-"típico" en NLP (limpieza de texto, stopwords, tokenización, stemming vs.
-lematización), representación matemática de un texto (Document-Term Matrix,
-Bag of Words).
-- [Diapositivas](https://docs.google.com/presentation/d/1ZoOBD8BvoVZkAu_58hRxQe2xowutgVfrsGJo3tR4QeY/edit?usp=sharing)
-- [Notebook - Práctica guiada](https://drive.google.com/file/d/1CjMq7aKPH_P_mFDEtRlNgLUFpanNnzNQ/view?usp=sharing)
+### [Charlas]({{ '/charlas/' | relative_url }})
+Trece conferencias y paneles con investigadoras, investigadores y profesionales que
+trabajan con datos digitales en ciencias sociales: polarización, guerras culturales,
+trabajo de datos, desigualdad en América Latina, ciencia de redes, plataformas de
+noticias, discurso de odio y agentes de IA.
 
-## M1. Acercamiento a los word embeddings
-Semántica léxica y semántica vectorial, matrices de co-ocurrencia
-palabra-contexto, similitud coseno, la intuición de word2vec (skip-gram,
-negative sampling) y aplicaciones en ciencias sociales (detección de
-estereotipos, trayectorias).
-- [Diapositivas](https://docs.google.com/presentation/d/1AQ9mwtzUg23ePFU37xi0usMqIVRizvyefeBVp8fatEY/edit?usp=sharing)
-- [Notebook - Práctica guiada](https://colab.research.google.com/drive/1UUr5TWTf1DR-U_QGNyFxaYhtA9Vj06WP?usp=sharing)
+### [Taller de Procesamiento de Lenguaje Natural]({{ '/taller-nlp/' | relative_url }})
+Introducción práctica al NLP para investigación en ciencias sociales: preprocesamiento y
+representación vectorial de texto, word embeddings, la arquitectura Transformer, y
+prompt engineering con LLMs. Cuatro módulos con diapositivas y notebooks guiadas.
 
-## M2. Transformers
-De los modelos secuenciales (RNN) a los Transformers: embeddings de
-entrada/salida, self-attention (Query/Key/Value), atención multicabezal y
-positional encoding. Reseña de GPT y BERT.
-- [Diapositivas](https://docs.google.com/presentation/d/1WW7WRTLpKdnNJDQY3j9FnNpOSMYSC27IQILWU98lOoA/edit?usp=sharing)
-- [Notebook - Práctica guiada transformers](https://colab.research.google.com/drive/1bTeXc6RHtIQaOcD0v1C5YTE2VKTQ-hlI?usp=sharing)
-- [Notebook - Práctica guiada pysentimiento](https://drive.google.com/file/d/1ZY0OXzECcuvfYPBC6bFxyPByO9osRa6O/view?usp=sharing)
+### [Taller de Encuestas]({{ '/taller-encuestas/' | relative_url }})
+Medición de polarización de actitudes con datos de encuesta, aplicando el marco de
+DiMaggio, Evans y Bryson (1996) a Argentina con datos de LAPOP.
 
-## M3. ¿Cómo interactuamos con un LLM? ¿Cómo usamos un LLM? ¿Qué problemas surgen con los LLMs?
-Evolución de los LLMs, para qué (no) conviene usarlos, sus riesgos
-(alucinaciones, sesgos) y transfer learning/fine-tuning. Guía práctica de
-prompt engineering: roles (`system`/`user`), x-shot learning y Chain of
-Thought (CoT). Usos posibles de los LLMs: clasificación, anotación. Sesgos y estereotipos en LLMs.
-- [Diapositivas - Intro LLMS](https://docs.google.com/presentation/d/1mtF_NDhC8dnK7CAWxcgTcdErfrcu2EPxe5JPe-L2yuE/edit?usp=sharing)
-- [Notebook - Práctica guiada Intro LLMs](https://drive.google.com/file/d/1cFBVP9pZveZORl1cqn6-t54jz2VJry0D/view?usp=sharing)
-- [Diapositivas - Intro LLMS](https://docs.google.com/presentation/d/1tkrYcqOefaGM8_ZAYeVC4hf7tlV92TYa8uEpgysgCvU/edit?usp=sharing)
-- [Notebook - Práctica guiada - LLMs y anotación](https://colab.research.google.com/drive/1RdQxYVqEIFTEHohsq1zVbmB9tML05iUz?usp=sharing)
-- [Diapositivas - LLMs y anotación](https://docs.google.com/presentation/d/1sDPwu6nCDt8CGr5jmqxcMTUcNvjjdfaMqDAj19RLjck/edit?usp=sharing)
-- [Notebook - Acuerdo entre anotadores](https://github.com/gefero/factor_data_tuto_NLP_SICSS/blob/main/cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb)
-- [Notebook - Práctica guiada - LLMs y sesgos](https://colab.research.google.com/drive/15v5kDWl8dQJY9pL1kMZk4zHxz1yK2C2n?usp=sharing)
-
-## Trabajo final
-Trabajo que integra lo visto en los módulos anteriores para responder una pregunta
-sustantiva sobre polarización. Hay **dos consignas a elección**; cada grupo elige una. Se
-resuelve en unas 6 horas y se entrega como una presentación de unos 10 minutos que reseñe
-las decisiones metodológicas y los principales resultados, con la notebook del análisis
-como respaldo.
-
-### Opción A. Un índice de polarización en comentarios de noticias
-Hay que construir un índice de polarización a nivel noticia a partir de los comentarios
-que cada una recibió, clasificados con `pysentimiento`. El eje del ejercicio es el salto
-de unidad de análisis —del texto individual a la conversación— y las decisiones
-metodológicas que ese salto obliga a tomar: la consigna no dice cómo operacionalizar la
-polarización, sino que plantea las preguntas que el trabajo tiene que contestar.
-- [Consigna](https://github.com/gefero/factor_data_tuto_NLP_SICSS/blob/main/consigna_desafio/clasificacion/CONSIGNA.md)
-- [Esqueleto de notebook](https://github.com/gefero/factor_data_tuto_NLP_SICSS/blob/main/consigna_desafio/clasificacion/SICSS_BAires_TP_Final_Esqueleto.ipynb)
-- [Solución de referencia](https://github.com/gefero/factor_data_tuto_NLP_SICSS/blob/main/consigna_desafio/clasificacion/SICSS_BAires_Desafio_Polarizacion_Noticias.ipynb) (spoiler: no abrirla antes de resolver)
-
-### Opción B. Polarización comparada: América Latina y el mundo (World Values Survey)
-La misma pregunta, en el terreno de las encuestas: ¿está América Latina más polarizada que
-el resto del mundo? Hay que construir una medida de polarización de actitudes comparable
-entre países a partir del World Values Survey (ola 7, 2017-2022). El marco es el de
-DiMaggio, Evans y Bryson (1996) y sus cuatro principios —dispersión, bimodalidad,
-restricción y consolidación—, que en el taller se aplican a Argentina con LAPOP y acá se
-extienden a una comparación internacional.
-- [Consigna](https://github.com/gefero/factor_data_tuto_NLP_SICSS/blob/main/consigna_desafio/encuestas/consigna_trabajo_final_polarizacion_WVS_v3.md)
-- Datos y documentación, con descarga directa: [archivo integrado de la ola 7 en CSV](https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main/consigna_desafio/encuestas/data/F00011356-WVS_Cross-National_Wave_7_csv_v6_0.zip) (21 MB) · [en RDS](https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main/consigna_desafio/encuestas/data/F00011421-WVS_Cross-National_Wave_7_rds_v6_0.zip) (19 MB) · [cuestionario maestro en PDF](https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main/consigna_desafio/encuestas/data/F00010738-WVS-7_Master_Questionnaire_2017-2020_English%20%281%29.pdf)
+### [Trabajo final]({{ '/desafio/' | relative_url }})
+El instituto cierra con un desafío sobre polarización, con dos consignas a elección:
+un índice de polarización en comentarios de noticias, o una comparación internacional
+de polarización de actitudes con el World Values Survey.
