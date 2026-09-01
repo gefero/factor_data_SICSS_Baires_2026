@@ -45,6 +45,14 @@ git clone https://github.com/gefero/factor_data_SICSS_Baires_2026
 
 Si ya clonaste sin `git-lfs` instalado, `git lfs pull` dentro del repo baja el contenido.
 
+**Ojo con Colab:** las celdas `!git clone ...` de las notebooks de `taller_nlp/` clonan
+sin `git-lfs`, así que algunos datasets (`hateval_test_df.csv`, `hateval_train_df.csv`,
+`rtas_hateval_llm.csv`, los `.zip`) quedan como punteros de texto de ~130 bytes en vez del
+archivo real — y `pandas` no tira error al leerlos, así que el fallo es silencioso, no un
+`FileNotFoundError`. Por eso esas celdas ahora instalan `git-lfs` antes de clonar
+(`!apt-get -qq install -y git-lfs && git lfs install --skip-repo`); si adaptás o agregás
+una notebook nueva que lea de `data/`, conviene mantener esa línea.
+
 ## Licencia
 
 Este repositorio se distribuye bajo licencia [MIT](LICENSE).
