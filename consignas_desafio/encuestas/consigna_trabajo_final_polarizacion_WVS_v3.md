@@ -25,8 +25,8 @@ Quisiéramos abordar la siguente pregunta: ¿Está América Latina más polariza
 
 
 El archivo integrado de la Ola 7 (2017–2022) y el cuestionario maestro están descargados y disponibles en [`data/`](data), en este mismo repositorio. Los links de abajo bajan el archivo directamente:
-- Datos WVS Ola 7, el mismo archivo integrado en dos formatos: [descargar CSV](https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main/consignas_desafio/encuestas/data/F00011356-WVS_Cross-National_Wave_7_csv_v6_0.zip) (21 MB comprimido, 190 MB al descomprimir) · [descargar RDS](https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main/consignas_desafio/encuestas/data/F00011421-WVS_Cross-National_Wave_7_rds_v6_0.zip) (19 MB, para leer desde R con `readRDS()`)
-- [Descargar cuestionario maestro](https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main/consignas_desafio/encuestas/data/F00010738-WVS-7_Master_Questionnaire_2017-2020_English%20%281%29.pdf) (PDF, versión en inglés)
+- Datos WVS Ola 7, el mismo archivo integrado en dos formatos: [descargar CSV](https://github.com/gefero/factor_data_SICSS_Baires_2026/raw/main/consignas_desafio/encuestas/data/F00011356-WVS_Cross-National_Wave_7_csv_v6_0.zip) (21 MB comprimido, 190 MB al descomprimir) · [descargar RDS](https://github.com/gefero/factor_data_SICSS_Baires_2026/raw/main/consignas_desafio/encuestas/data/F00011421-WVS_Cross-National_Wave_7_rds_v6_0.zip) (19 MB, para leer desde R con `readRDS()`)
+- [Descargar cuestionario maestro](https://github.com/gefero/factor_data_SICSS_Baires_2026/raw/main/consignas_desafio/encuestas/data/F00010738-WVS-7_Master_Questionnaire_2017-2020_English%20%281%29.pdf) (PDF, versión en inglés)
 - Libro de códigos: no está descargado. Se baja del [sitio de WVS](https://www.worldvaluessurvey.org/WVSDocumentationWV7.jsp), junto a los archivos anteriores.
 
 Todo lo demás lo decide el grupo.
