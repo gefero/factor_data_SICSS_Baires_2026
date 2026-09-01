@@ -1,5 +1,28 @@
-title: Summer Institute in Computational Social Sciences - Buenos Aires 2026
-subtitle: Taller de Procesamiento de Lenguaje Natural
+title: SICSS - Buenos Aires 2026
+description: Summer Institute in Computational Social Sciences - Buenos Aires
+url: https://gefero.github.io
+baseurl: /factor_data_tuto_NLP_SICSS
 show_downloads: false
 theme: jekyll-theme-cayman
-site.url: https://gefero.github.io/factor_data_tuto_NLP_SICSS/
+
+repo: https://github.com/gefero/factor_data_tuto_NLP_SICSS
+repo_raw: https://github.com/gefero/factor_data_tuto_NLP_SICSS/raw/main
+
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: page
+
+exclude:
+  - README.md
+  - LICENSE
+  - .gitattributes
+  - .gitignore
+  - .Rhistory
+  - data/
+  - taller_nlp/data/
+  - consignas_desafio/encuestas/data/
+  - taller_encuestas/
+  - "*.zip"

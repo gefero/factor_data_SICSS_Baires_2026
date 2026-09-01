@@ -1,0 +1,10 @@
+- title: Inicio
+  url: /
+- title: Charlas
+  url: /charlas/
+- title: Taller de NLP
+  url: /taller-nlp/
+- title: Taller de encuestas
+  url: /taller-encuestas/
+- title: Trabajo final
+  url: /desafio/
