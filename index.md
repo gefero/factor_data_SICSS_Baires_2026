@@ -15,6 +15,13 @@ junto a la **EIDAES-UNSAM**.
 El repositorio completo, con todos los archivos, está en
 [GitHub]({{ site.repo }}).
 
+## Comisión organizadora
+
+- [Germán Rosati](https://gefero.github.io/)
+- [Adriana Chazarreta](https://bicyt.conicet.gov.ar/fichas/p/adriana-silvina-chazarreta)
+- [Nayla Sol Garcilazo](https://www.linkedin.com/in/nayla-sol-garcilazo/)
+- [Florencia Piñeyrúa](https://bicyt.conicet.gov.ar/fichas/p/florencia-nathalia-pineyrua)
+
 ## Contenidos
 
 ### [Charlas]({{ '/charlas/' | relative_url }})
