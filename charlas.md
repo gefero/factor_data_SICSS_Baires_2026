@@ -12,7 +12,7 @@ ciencias sociales. Todas las diapositivas están disponibles para descargar.
 
 | Charla | Fecha | Expositor/a | Tema |
 |---|---|---|---|
-| [Del giro lingüístico al giro (lingüístico) computacional. ¿Qué son las Ciencias Sociales Computacionales?]({{ site.repo_raw }}/charlas/000_rosati_Factor_Data_Intro_SICSS.pdf) | 11/08, 11:00 a 13:00 | Germán Rosati (CONICET / factor~data-EIDAES-UNSAM / PIMSA), con Adriana Chazarreta (CONICET / factor~data-EIDAES UNSAM), Florencia Piñeyrúa y Nayla Sol Garcilazo | Charla inaugural: definición y genealogía de las CSC |
+| [Del giro lingüístico al giro (lingüístico) computacional. ¿Qué son las Ciencias Sociales Computacionales?]({{ site.repo_raw }}/charlas/000_rosati_Factor_Data_Intro_SICSS.pdf) | 11/08, 11:00 a 13:00 | Germán Rosati,  Adriana Chazarreta , Florencia Piñeyrúa y Nayla Sol Garcilazo (factor~data - EIDAES/UNSAM) | Charla inaugural: definición y genealogía de las CSC |
 | [Las coordenadas de la polarización política. Controversias sobre guerras culturales]({{ site.repo_raw }}/charlas/010_vommaro.pdf) | 11/08, 14:00 a 16:00 | Gabriel Vommaro (EIDAES/UNSAM) | El concepto de polarización y las guerras culturales |
 | [Trabajo de datos, precarización y sesgos]({{ site.repo_raw }}/charlas/020_miceli_compressed.pdf) | 12/08, 9:00 a 11:00 | Milagros Miceli (TU Berlin) | Anotación y moderación de datos, el *data-production dispositif* |
 | La economía vivida: desigualdad, distribución y descontento en América Latina (material no disponible) | 12/08, 11:00 a 13:00 | Gabriel Kessler | Desigualdad, descontento político y protesta en América Latina |
