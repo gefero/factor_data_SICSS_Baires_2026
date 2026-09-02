@@ -4,7 +4,7 @@ description: Summer Institute in Computational Social Sciences
 permalink: /
 ---
 
-<img src="{{ site.repo_raw }}/imgs/logo_final_conjunto.png" alt="Logos Factor~Data y SICSS" width="420" style="display:block;margin-bottom:0.5rem;">
+<img src="{{ site.repo_raw }}/imgs/logo_final_conjunto.png" alt="Logos Factor~Data y SICSS" style="display:block;width:100%;margin-bottom:0.5rem;">
 
 # Summer Institute in Computational Social Sciences (Buenos Aires 2026)
 
