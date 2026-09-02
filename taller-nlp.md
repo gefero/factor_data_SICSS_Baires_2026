@@ -36,6 +36,14 @@ Se propone que las y los asistentes:
 Todo el material local de este taller (diapositivas, notebooks y traducciones a R) está
 en [`taller_nlp/`]({{ site.repo }}/tree/main/taller_nlp) en el repositorio.
 
+## Fechas y horarios
+
+El taller se dictó los días 12, 13 y 14 de agosto de 2026:
+
+- 12/08 (miércoles), 14:00 a 18:00
+- 13/08 (jueves), 9:00 a 13:00 y 14:00 a 16:00
+- 14/08 (viernes), 9:00 a 13:00
+
 ## Contenidos y materiales
 
 ### M0. Vectorizando un corpus
@@ -75,7 +83,7 @@ clasificación, anotación. Sesgos y estereotipos en LLMs.
 - [Notebook - Práctica guiada Intro LLMs (Google Drive)](https://drive.google.com/file/d/1cFBVP9pZveZORl1cqn6-t54jz2VJry0D/view?usp=sharing) · [notebook]({{ site.repo_raw }}/taller_nlp/cap3/03_SICSS_Baires_LLMs.ipynb) · [versión en R]({{ site.repo_raw }}/taller_nlp/cap3/03_SICSS_Baires_LLMs_R.Rmd)
 - [Diapositivas - LLMs y anotación (Google Slides)](https://docs.google.com/presentation/d/1sDPwu6nCDt8CGr5jmqxcMTUcNvjjdfaMqDAj19RLjck/edit?usp=sharing) · [PDF]({{ site.repo_raw }}/taller_nlp/cap3/03%20-%20SICSS-Baires%20-%20LLMs%20y%20Anotaci%C3%B3n.pdf)
 - [Notebook - Práctica guiada LLMs y anotación (Colab)](https://colab.research.google.com/drive/1RdQxYVqEIFTEHohsq1zVbmB9tML05iUz?usp=sharing) · [notebook]({{ site.repo_raw }}/taller_nlp/cap3/03_SICSS_Baires_LLMs_y_Anotaci%C3%B3n.ipynb)
-- [Notebook - Acuerdo entre anotadores]({{ site.repo_raw }}/taller_nlp/cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb) — métricas de acuerdo inter-anotador (kappa de Cohen, kappa de Fleiss, alfa de Krippendorff) sobre las anotaciones humanas de discurso de odio, como techo realista contra el que evaluar a un LLM anotador
+- [Notebook - Acuerdo entre anotadores]({{ site.repo_raw }}/taller_nlp/cap3/03_SICSS_Baires_Acuerdo_entre_Anotadores.ipynb) (métricas de acuerdo inter-anotador: kappa de Cohen, kappa de Fleiss, alfa de Krippendorff, sobre las anotaciones humanas de discurso de odio, como techo realista contra el que evaluar a un LLM anotador)
 - [Diapositivas - LLMs y sesgos (Google Slides)](https://docs.google.com/presentation/d/1tkrYcqOefaGM8_ZAYeVC4hf7tlV92TYa8uEpgysgCvU/edit?usp=sharing) · [PDF]({{ site.repo_raw }}/taller_nlp/cap3/03%20-%20SICSS-Baires%20-%20LLMs%20y%20sesgos.pdf)
 - [Notebook - Práctica guiada LLMs y sesgos (Colab)](https://colab.research.google.com/drive/15v5kDWl8dQJY9pL1kMZk4zHxz1yK2C2n?usp=sharing) · [notebook]({{ site.repo_raw }}/taller_nlp/cap3/03_SICSS_Baires_LLMS_Sesgos.ipynb)
 
@@ -89,5 +97,5 @@ notebooks los leen automáticamente desde ahí.
 
 ## Trabajo final
 
-El taller cierra con un trabajo final sobre polarización, con dos consignas a elección —
-ver la [página del desafío]({{ '/desafio/' | relative_url }}).
+El taller cierra con un trabajo final sobre polarización: ver la
+[página del desafío]({{ '/desafio/' | relative_url }}).

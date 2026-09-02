@@ -7,8 +7,12 @@ permalink: /taller-encuestas/
 # Taller de Encuestas
 
 Taller de la SICSS-Buenos Aires 2026 sobre **medición de polarización de actitudes con
-datos de encuesta**. Toma el mismo problema que el taller de NLP —cómo operacionalizar
-la polarización— y lo lleva al terreno de las encuestas de opinión.
+datos de encuesta**. Toma el mismo problema que el taller de NLP (cómo operacionalizar
+la polarización) y lo lleva al terreno de las encuestas de opinión.
+
+## Fecha y horario
+
+18/08 (martes), 9:00 a 18:00, con almuerzo de 13:00 a 14:00.
 
 El marco es el de DiMaggio, Evans y Bryson (1996), que descompone la polarización en
 cuatro principios que pueden moverse en direcciones independientes:
@@ -21,9 +25,7 @@ cuatro principios que pueden moverse en direcciones independientes:
 | **Consolidación** | Si las posiciones se alinean con la ideología declarada o con clivajes sociales |
 
 En el taller ese esquema se aplica a **Argentina con datos de LAPOP** (Latin American
-Public Opinion Project). El trabajo final del desafío lo extiende a una comparación
-internacional con el World Values Survey — ver la
-[página del desafío]({{ '/desafio/' | relative_url }}).
+Public Opinion Project).
 
 ## Material
 
