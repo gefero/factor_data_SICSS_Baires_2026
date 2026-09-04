@@ -6,18 +6,15 @@ permalink: /desafio/
 
 # Trabajo final
 
-El taller cierra con un trabajo final que integra lo visto en los módulos anteriores
-para responder una pregunta sustantiva sobre **polarización**, en vez de enseñar una
-técnica más. Se resuelve en unas 6 horas y se entrega como una presentación de unos 10
-minutos que reseñe las decisiones metodológicas y los principales resultados, con la
-notebook del análisis como respaldo.
+El taller cierra con un trabajo final que, en vez de incorporar nuevas técnicas, integra el contenido comprendido en los módulos anteriores
+para responder una pregunta sustantiva sobre **polarización**. Se resuelve en 6 horas y se entrega como una presentación oral que reseñe las decisiones metodológicas y los principales resultados, con la notebook del análisis como respaldo.
 
 ## Un índice de polarización en comentarios de noticias
 
 Hay que construir un índice de polarización **a nivel noticia** a partir de los
 comentarios que cada una recibió, clasificados con `pysentimiento`. El eje del ejercicio
 es el salto de unidad de análisis (del texto individual a la conversación) y las
-decisiones metodológicas que ese salto obliga a tomar: la consigna no dice cómo
+decisiones metodológicas que ese salto obliga a tomar: la consigna no indica cómo
 operacionalizar la polarización, sino que plantea las preguntas que el trabajo tiene que
 contestar.
 
@@ -27,8 +24,7 @@ contestar.
 
 ## Lo que produjeron los grupos
 
-Cuatro presentaciones de trabajos finales de ediciones anteriores, como muestra de lo
-que se puede construir con esta consigna:
+Cuatro presentaciones de trabajos realizados durante la edición 2026 del SICSS:
 
 - [El pulso de los comentarios, un índice de polarización a nivel noticia]({{ site.repo_raw }}/consignas_desafio/presentaciones_asistentes/01_presentacion_polarizacion.pdf)
 - [Polarización en la conversación digital, comentarios a noticias de medios oficiales en Twitter]({{ site.repo_raw }}/consignas_desafio/presentaciones_asistentes/02_propuesta_polarizacion.pdf)
