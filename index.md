@@ -39,6 +39,11 @@ prompt engineering con LLMs. Cuatro módulos con diapositivas y notebooks guiada
 Medición de polarización de actitudes con datos de encuesta, aplicando el marco de
 DiMaggio, Evans y Bryson (1996) a Argentina con datos de LAPOP.
 
+### [Taller de Silicon Sampling]({{ '/taller-silicon-sampling/' | relative_url }})
+Usar LLMs para simular respuestas de encuesta ("muestras de silicio") y medir sus
+sesgos frente a datos humanos reales, con dos análisis reproducibles sobre la World
+Values Survey y un experimento propio de expresiones verbales de probabilidad.
+
 ### [Trabajo final]({{ '/desafio/' | relative_url }})
 El instituto cierra con un desafío sobre polarización: construir un índice de
 polarización en comentarios de noticias.
